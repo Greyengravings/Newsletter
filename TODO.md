@@ -15,6 +15,8 @@
 - [x] Add nodemon for development
 - [x] Update frontend with OnRender backend URL
 - [x] Commit and push changes to GitHub Pages
+- [x] Fix base path in vite.config.js for GitHub Pages
+- [x] Rebuild and redeploy frontend
 
 ## Pending Tasks
 - [ ] Test full application with deployed backend
