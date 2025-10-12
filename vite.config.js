@@ -2,7 +2,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+  base: '/cms-frontend/',
   plugins: [react()],
+  build: {
+    sourcemap: false,
+  },
   server: {
     host: true, // This allows the server to be accessible externally
     // Add your Cloudflare Tunnel hostname here
