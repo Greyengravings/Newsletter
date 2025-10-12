@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import AnimatedTitle from './AnimatedTitle';
 import { ThemeContext } from '../context/ThemeContext'; // import theme context
 import axios from 'axios';
+import DefaultProfileImg from '/DefaultProfileImg.jpeg';
 
 // Helper to style NavLinks with theme-aware colors
 const NavItem = ({ to, children, onClick, theme }) => {
@@ -79,7 +80,7 @@ function Header() {
             if (response.data && response.data.profile) {
               setProfile({
                 displayName: response.data.profile.displayName || username,
-                profilePicture: response.data.profile.profilePicture || '/DefaultProfileImg.jpeg',
+                profilePicture: response.data.profile.profilePicture || DefaultProfileImg,
               });
             }
           } else {
@@ -89,7 +90,7 @@ function Header() {
             });
             setProfile({
               displayName: response.data.user.displayName || username,
-              profilePicture: response.data.user.profilePicture || '/DefaultProfileImg.jpeg',
+              profilePicture: response.data.user.profilePicture || DefaultProfileImg,
             });
           }
         } catch (error) {
@@ -97,7 +98,7 @@ function Header() {
           // Fallback to default values
           setProfile({
             displayName: username,
-            profilePicture: '/DefaultProfileImg.jpeg',
+            profilePicture: DefaultProfileImg,
           });
         }
       };
@@ -146,7 +147,7 @@ function Header() {
           {isLoggedIn ? (
             <NavLink to={role === 'admin' ? '/admin-dashboard' : '/user-profile'} onClick={closeMenu} className="flex items-center space-x-2">
               <img
-                src={profile.profilePicture || '/DefaultProfileImg.jpeg'}
+                src={profile.profilePicture || DefaultProfileImg}
                 alt="Profile"
                 className="w-8 h-8 rounded-full object-cover"
               />
@@ -226,7 +227,7 @@ function Header() {
           {isLoggedIn ? (
             <NavLink to={role === 'admin' ? '/admin-dashboard' : '/user-profile'} onClick={closeMenu} className="flex items-center space-x-2">
               <img
-                src={profile.profilePicture || '/DefaultProfileImg.jpeg'}
+                src={profile.profilePicture || DefaultProfileImg}
                 alt="Profile"
                 className="w-8 h-8 rounded-full object-cover"
               />

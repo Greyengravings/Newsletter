@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../features/auth/authSlice';
 import { ThemeContext } from '../context/ThemeContext';
 import axios from 'axios';
+import DefaultProfileImg from '/DefaultProfileImg.jpeg';
 
 function UserProfilePage() {
   const { theme } = useContext(ThemeContext);
@@ -23,7 +24,7 @@ function UserProfilePage() {
         });
         setProfile({
           displayName: response.data.user.displayName || username,
-          profilePicture: response.data.user.profilePicture || '/DefaultProfileImg.jpeg',
+          profilePicture: response.data.user.profilePicture || DefaultProfileImg,
           email: response.data.user.email,
         });
       } catch (err) {

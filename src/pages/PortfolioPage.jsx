@@ -17,7 +17,7 @@ function PortfolioPage() {
       {/* Image Section */}
       <div className="md:w-1/2 flex justify-center">
         <img
-          src="ProfileImg.jpeg"
+          src={ProfileImg}
           alt="Profile"
           className="rounded-full shadow-lg w-65 h-65 object-cover"
         />
