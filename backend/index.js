@@ -44,7 +44,7 @@ app.use('/uploads', express.static('uploads'));
 
 // Enable CORS for frontend origin
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://greyengravings.github.io'],
   credentials: true,
 }));
 

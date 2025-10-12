@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Change this to your backend API URL
-const API_URL = 'http://localhost:5001/api/blogs';
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api/blogs';
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   const response = await axios.get(API_URL);

@@ -1,37 +1,14 @@
-# TODO: Remove Slashes from Images
-
-- [ ] Edit src/pages/PortfolioPage.jsx: Import ProfileImg.jpeg and update src attribute to use imported variable instead of "ProfileImg.jpeg"
-- [ ] Edit src/components/Header.jsx: Import DefaultProfileImg.jpeg and update fallback src attributes to use imported variable
-- [ ] Edit src/pages/UserProfilePage.jsx: Import DefaultProfileImg.jpeg and update fallback src attributes to use imported variable
-- [ ] Followup: Run the app locally to verify images load correctly in both themes
-
-# TODO: Admin Dashboard Category Dropdown
+# TODO: Add OnRender Backend Hosting
 
 ## Completed Tasks
-- [x] Define a list of categories (Technology, Education, Lifestyle, Travel, Food, Health, Business) in `src/pages/AdminDashboard.jsx`
-- [x] Replace the category text input with a dropdown select element in the "Add New Post" form
+- [x] Analyze backend structure and dependencies
+- [x] Identify CORS and API URL configurations
+- [x] Gather production URLs and MongoDB connection string
 
-## Next Steps
-- Test the admin dashboard to ensure the dropdown works correctly
-- Optionally, run the development server to verify the changes
-
-## Idle Timeout Feature
-- [x] Add logout API endpoint in backend/routes/admin.js
-- [x] Create useIdleTimeout hook in src/hooks/useIdleTimeout.jsx
-- [x] Integrate hook in src/App.jsx for automatic logout after 15 minutes of inactivity
-- [x] Test login and verify automatic logout on inactivity
-
-## Authentication and User Roles with JWT
-- [x] Implement JWT authentication for users
-- [x] Add role field to User model (default 'user', 'admin' with secret code "D15C")
-- [x] Create user registration and login routes with JWT
-- [x] Update frontend authSlice for JWT tokens
-- [x] Create user login/register pages
-- [x] Add user management to admin dashboard (add/delete users, set membership days)
-- [x] Fix theme persistence in localStorage
-
-## User Management Features
-- [x] Add membershipEndDate field to User model
-- [x] Create admin routes for user CRUD operations
-- [x] Add user management UI in admin dashboard
-- [x] Allow admins to set membership days for users
+## Pending Tasks
+- [x] Update backend/index.js for production CORS
+- [x] Update src/features/posts/postsSlice.js for configurable API URL
+- [x] Create backend/.env.example file
+- [x] Deploy backend to OnRender
+- [x] Update frontend API URL and redeploy
+- [ ] Test full application
