@@ -11,4 +11,6 @@
 - [x] Create backend/.env.example file
 - [x] Deploy backend to OnRender
 - [x] Update frontend API URL and redeploy
+- [x] Update all frontend API calls to use environment variable
+- [x] Add nodemon for development
 - [ ] Test full application

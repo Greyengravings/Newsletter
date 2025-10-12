@@ -2,35 +2,35 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Change this to your backend API URL
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api/blogs';
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-  const response = await axios.get(API_URL);
+  const response = await axios.get(`${API_URL}/blogs`);
   return response.data;
 });
 
 export const fetchPostById = createAsyncThunk('posts/fetchPostById', async (id) => {
-  const response = await axios.get(`${API_URL}/${id}`);
+  const response = await axios.get(`${API_URL}/blogs/${id}`);
   return response.data;
 });
 
 export const bookmarkPost = createAsyncThunk('posts/bookmarkPost', async ({ postId, userId }) => {
-  const response = await axios.post(`${API_URL}/${postId}/bookmark`, { userId });
+  const response = await axios.post(`${API_URL}/blogs/${postId}/bookmark`, { userId });
   return response.data;
 });
 
 export const unbookmarkPost = createAsyncThunk('posts/unbookmarkPost', async ({ postId, userId }) => {
-  const response = await axios.delete(`${API_URL}/${postId}/bookmark`, { data: { userId } });
+  const response = await axios.delete(`${API_URL}/blogs/${postId}/bookmark`, { data: { userId } });
   return response.data;
 });
 
 export const fetchBookmarkedPosts = createAsyncThunk('posts/fetchBookmarkedPosts', async (userId) => {
-  const response = await axios.get(`${API_URL}/user/${userId}/bookmarks`);
+  const response = await axios.get(`${API_URL}/blogs/user/${userId}/bookmarks`);
   return response.data;
 });
 
 export const incrementViewCount = createAsyncThunk('posts/incrementViewCount', async (postId) => {
-  const response = await axios.post(`${API_URL}/${postId}/view`);
+  const response = await axios.post(`${API_URL}/blogs/${postId}/view`);
   return response.data;
 });
 

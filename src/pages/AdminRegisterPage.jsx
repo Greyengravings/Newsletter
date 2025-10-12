@@ -55,7 +55,7 @@ function AdminRegisterPage() {
     }
 
     try {
-      await axios.post('http://localhost:5001/api/admin/register', {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/register`, {
         username: email, // This should be email, but backend expects username as email
         phoneNumber,
         specialId,

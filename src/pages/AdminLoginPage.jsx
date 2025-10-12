@@ -46,7 +46,7 @@ function AdminLoginPage() {
 
     try {
       // Call backend login endpoint
-      const response = await axios.post('http://localhost:5001/api/admin/login', {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/login`, {
         username,
         password,
         phoneNumber,

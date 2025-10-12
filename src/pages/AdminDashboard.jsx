@@ -59,7 +59,7 @@ function AdminDashboard() {
     if (!username) return;
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:5001/api/admin/profile/${encodeURIComponent(username)}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/profile/${encodeURIComponent(username)}`);
         if (response.data && response.data.profile) {
           setProfile({
             displayName: response.data.profile.displayName || '',
@@ -85,7 +85,7 @@ function AdminDashboard() {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/admin/users');
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/users`);
       setUsers(response.data.users);
     } catch (error) {
       console.error('Failed to fetch users:', error);
@@ -94,7 +94,7 @@ function AdminDashboard() {
 
   const handleAddUser = async () => {
     try {
-      await axios.post('http://localhost:5001/api/admin/users', newUser);
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/users`, newUser);
       setShowUserModal(false);
       setNewUser({ username: '', email: '', password: '', role: 'user', membershipDays: 30 });
       fetchUsers();
@@ -107,7 +107,7 @@ function AdminDashboard() {
 
   const handleUpdateMembership = async (userId, membershipDays) => {
     try {
-      await axios.put(`http://localhost:5001/api/admin/users/${userId}/membership`, { membershipDays });
+      await axios.put(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/users/${userId}/membership`, { membershipDays });
       fetchUsers();
       alert('Membership updated successfully!');
     } catch (error) {
@@ -119,7 +119,7 @@ function AdminDashboard() {
   const handleDeleteUser = async (userId, username) => {
     if (window.confirm(`Are you sure you want to delete user "${username}"?`)) {
       try {
-        await axios.delete(`http://localhost:5001/api/admin/users/${userId}`);
+        await axios.delete(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/users/${userId}`);
         fetchUsers();
         alert('User deleted successfully!');
       } catch (error) {
@@ -144,7 +144,7 @@ function AdminDashboard() {
     if (!newPost.title || !newPost.author || !newPost.content) return;
 
     try {
-      const response = await axios.post('http://localhost:5001/api/blogs', {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/blogs`, {
         ...newPost,
         createdAt: new Date().toISOString(),
       });
@@ -169,7 +169,7 @@ function AdminDashboard() {
   const confirmDelete = async () => {
     if (confirmTitle === postToDelete.title) {
       try {
-        await axios.delete(`http://localhost:5001/api/blogs/${postToDelete.id}`);
+        await axios.delete(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/blogs/${postToDelete.id}`);
         dispatch(deletePost(postToDelete.id)); // Remove from redux
         setShowConfirmModal(false);
         setPostToDelete(null);
@@ -213,7 +213,7 @@ function AdminDashboard() {
       }
 
       const response = await axios.put(
-        `http://localhost:5001/api/admin/profile/${encodeURIComponent(username)}`,
+        `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/profile/${encodeURIComponent(username)}`,
         formData,
         {
           headers: {
