@@ -127,7 +127,7 @@ function CombinedLoginPage() {
   };
 
   return (
-    <div className={`flex items-center justify-center min-h-[calc(100vh-64px)] p-4 transition-colors duration-500 ${
+    <div className={`flex items-center justify-center min-h-[calc(100vh-200px)] p-4 transition-colors duration-500 ${
       theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'
     }`}>
       <div className={`p-8 rounded-xl shadow-xl w-full max-w-md transition-colors duration-500 ${

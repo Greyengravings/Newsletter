@@ -36,8 +36,8 @@ function AppContent() {
       >
         <Header />
 
-        {/* Outer full-width background - pt-80 to account for fixed header height and spacing */}
-        <main className="w-full flex-grow p-4 md:p-6 pt-80">
+        {/* Main content area with top padding to clear the fixed floating header */}
+        <main className="w-full flex-grow p-4 md:p-6 pt-32">
           {/* Inner constrained content area */}
           <div className="max-w-7xl mx-auto">
             <Routes>
