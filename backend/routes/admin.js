@@ -40,7 +40,7 @@ const upload = multer({
   }
 });
 
-// Register new admin (specialId validation removed)
+// Register new admin
 router.post('/register', async (req, res) => {
   const { username, email, phoneNumber, specialId, password } = req.body;
 
@@ -48,6 +48,10 @@ router.post('/register', async (req, res) => {
 
   if (!password || password.length < 8) {
     return res.status(400).json({ message: 'Password must be at least 8 characters' });
+  }
+
+  if (!specialId || specialId.toLowerCase() !== 'd15c') {
+    return res.status(400).json({ message: 'Invalid secret code for admin registration' });
   }
 
   try {

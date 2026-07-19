@@ -11,11 +11,8 @@ import PostPage from './pages/PostPage';
 import AboutPage from './pages/AboutPage';
 import PortfolioPage from './pages/PortfolioPage';
 import ExplorePage from './pages/ExplorePage';
-import AdminLoginPage from './pages/AdminLoginPage';
 import AdminDashboard from './pages/AdminDashboard';
-import AdminRegister from './pages/AdminRegisterPage';
 import CombinedLoginPage from './pages/CombinedLoginPage';
-import UserRegisterPage from './pages/UserRegisterPage';
 import UserProfilePage from './pages/UserProfilePage';
 
 // Separate component to use ThemeContext
@@ -51,8 +48,6 @@ function AppContent() {
               <Route path="/explore" element={<ExplorePage />} />
               <Route path="/login" element={<CombinedLoginPage />} />
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
-              <Route path="/admin-register" element={<AdminRegister />} />
-              <Route path="/user-register" element={<UserRegisterPage />} />
               <Route path="/user-profile" element={<UserProfilePage />} />
             </Routes>
           </div>
