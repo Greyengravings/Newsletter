@@ -8,7 +8,8 @@ export default function useIdleTimeout(isLoggedIn, logout) {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(async () => {
       try {
-        await axios.post('http://localhost:5001/api/admin/logout');
+        const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+        await axios.post(`${apiUrl}/admin/logout`);
       } catch (error) {
         console.error('Logout API error:', error);
       }
