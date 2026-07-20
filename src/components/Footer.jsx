@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SocialIcon from './SocialIcon';
 import AnimatedTitle from './AnimatedTitle';
+import { ThemeContext } from '../context/ThemeContext';
+import SubscriptionSuccessModal from './SubscriptionSuccessModal';
 
 function Footer() {
+  const { theme } = useContext(ThemeContext);
+  const [email, setEmail] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [subscribedEmail, setSubscribedEmail] = useState('');
+
   const handleSubscribe = (e) => {
     e.preventDefault();
-    // In a real app, handle the email submission is here in this line
-    console.log("Subscription form submitted!");
-    alert("Thank you for subscribing!");
+    setSubscribedEmail(email);
+    setIsModalOpen(true);
+    setEmail('');
   };
 
   return (
@@ -92,6 +99,8 @@ function Footer() {
                   required
                   className="w-full px-4 py-3 rounded-xl bg-gray-800 text-white placeholder-gray-500 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
                   placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <button
@@ -115,6 +124,13 @@ function Footer() {
           </div>
         </div>
       </div>
+
+      <SubscriptionSuccessModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        email={subscribedEmail}
+        theme={theme}
+      />
     </footer>
   );
 }
