@@ -439,22 +439,52 @@ function Header() {
                 Subscribe
               </NavLink>
 
-              {/* Theme Toggle in Mobile Menu */}
-              <div className="flex items-center justify-center w-full pt-4 border-t border-blue-200/30 dark:border-white/10">
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={theme === 'dark'}
-                    onChange={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-                  />
-                  <div className="w-14 h-8 bg-gray-300 dark:bg-gray-700 rounded-full peer peer-checked:bg-blue-600 transition-colors"></div>
-                  <div className="absolute left-1 top-1 bg-white w-6 h-6 rounded-full
-                      transition-transform transform peer-checked:translate-x-6"></div>
-                  <span className="ml-3 text-sm font-medium">
-                    {theme === 'light' ? 'Light' : 'Dark'} Mode
-                  </span>
-                </label>
+              {/* Theme & Accessibility Toggles in Mobile Menu */}
+              <div className="w-full pt-4 border-t border-blue-200/30 dark:border-white/10 space-y-4">
+                {/* Dark Mode */}
+                <div className="flex items-center justify-between px-2">
+                  <span className="text-sm font-medium">Dark Mode</span>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={theme === 'dark'}
+                      onChange={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+                    />
+                    <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 rounded-full peer peer-checked:bg-blue-600 transition-colors"></div>
+                    <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform peer-checked:translate-x-5"></div>
+                  </label>
+                </div>
+
+                {/* Reduce Blur */}
+                <div className="flex items-center justify-between px-2">
+                  <span className="text-sm font-medium">Reduce Transparency</span>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={reduceBlur}
+                      onChange={() => setReduceBlur(!reduceBlur)}
+                    />
+                    <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 rounded-full peer peer-checked:bg-blue-600 transition-colors"></div>
+                    <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform peer-checked:translate-x-5"></div>
+                  </label>
+                </div>
+
+                {/* Reduce Animations */}
+                <div className="flex items-center justify-between px-2">
+                  <span className="text-sm font-medium">Reduce Animations</span>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={reduceAnimations}
+                      onChange={() => setReduceAnimations(!reduceAnimations)}
+                    />
+                    <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 rounded-full peer peer-checked:bg-blue-600 transition-colors"></div>
+                    <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform peer-checked:translate-x-5"></div>
+                  </label>
+                </div>
               </div>
             </div>
           </nav>

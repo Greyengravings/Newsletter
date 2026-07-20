@@ -11,13 +11,13 @@ function AboutPage() {
         theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
       }`}
     >
-      <h1 className="text-3xl font-extrabold mb-6 text-center">
+      <h1 className="text-2xl md:text-3xl font-extrabold mb-6 text-center">
         About This Blog
       </h1>
 
       {/* ... previous content ... */}
       <p
-        className={`text-center mb-8 max-w-3xl mx-auto ${
+        className={`text-center mb-8 max-w-3xl mx-auto text-sm md:text-base ${
           theme === 'dark' ? 'text-gray-300' : 'text-gray-800'
         }`}
       >
@@ -32,7 +32,7 @@ function AboutPage() {
       </p>
 
       <p
-        className={` text-center mb-8 max-w-3xl mx-auto ${
+        className={` text-center mb-8 max-w-3xl mx-auto text-sm md:text-base ${
           theme === 'dark' ? 'text-gray-300' : 'text-gray-800'
         }`}
       >
@@ -50,11 +50,11 @@ function AboutPage() {
 
       {/* Tech Stack Section */}
       <section className="mb-12">
-        <h2 className="text-3xl font-bold mb-6 text-center">
+        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
           Our Technology Stack
         </h2>
         <p
-          className={`text-center mb-8 max-w-2xl mx-auto ${
+          className={`text-center mb-8 max-w-2xl mx-auto text-sm md:text-base ${
             theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
           }`}
         >
@@ -222,11 +222,11 @@ function AboutPage() {
                 The Developer
               </p>
 
-              <h1 className="text-xl md:text-2xl font-bold mb-3">
+              <h1 className="text-lg md:text-xl font-bold mb-3">
                 Portfolio Journey
               </h1>
 
-              <div className="space-y-3 text-sm md:text-base leading-relaxed opacity-90">
+              <div className="space-y-3 text-xs md:text-sm leading-relaxed opacity-90">
                 <p>
                   Hello! I'm a passionate full-stack developer currently
                   honing my skills in creating dynamic and user-friendly web
