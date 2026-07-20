@@ -33,6 +33,11 @@ function AppContent() {
     ].filter(Boolean);
 
     document.body.className = classes.join(' ');
+
+    // Set background doodle based on theme
+    const baseUrl = import.meta.env.MODE === 'production' ? '/Newsletter' : '';
+    const doodleUrl = theme === 'dark' ? `${baseUrl}/darkdoodle.jpg` : `${baseUrl}/lightdoodle.jpg`;
+    document.documentElement.style.setProperty('--doodle-url', `url(${doodleUrl})`);
   }, [theme, reduceBlur, reduceAnimations]);
 
   return (

@@ -13,6 +13,23 @@ html {
   font-size: 100%;
 }
 
+/* Doodle Background Implementation */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.8; /* 80% opacity as requested */
+  background-image: var(--doodle-url);
+  background-repeat: repeat;
+  background-size: 300px; /* Tiled size */
+  transition: opacity 0.5s ease-in-out;
+}
+
 /* Allow hero section to scroll naturally */
 .hero-container {
   overflow-x: visible;
