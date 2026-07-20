@@ -149,7 +149,7 @@ function Header() {
               : 'bg-blue-50/70 border-blue-200/50 text-gray-900'
           }`}
         >
-          <div className="flex justify-between items-center py-2 pl-10 pr-5 relative">
+          <div className="flex justify-between items-center py-2 pl-4 pr-5 relative">
             {/* Logo Section */}
             <div className="flex-shrink-0 z-10">
               <NavLink to="/" onClick={closeMenu}>
