@@ -26,6 +26,28 @@ const sampleBlogs = [
     `,
   },
   {
+    title: 'The Future of AI: How Generative Models are Changing the World',
+    excerpt: 'Explore the rapid evolution of Artificial Intelligence and its profound impact on creativity, industry, and daily life.',
+    imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1000',
+    createdAt: new Date('2024-05-12'),
+    author: 'Tech Futurist',
+    category: 'Technology',
+    content: `
+      <p class="lead">Artificial Intelligence is no longer a distant sci-fi dream; it is the engine driving the next industrial revolution. From Large Language Models to image generators, the landscape of human productivity is shifting beneath our feet.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">The Creative Renaissance</h3>
+      <p>Generative AI has democratized creativity. Someone with no formal training in graphic design can now generate stunning visuals using tools like Midjourney or DALL-E. Similarly, writers are using AI to brainstorm plots, refine prose, and translate languages with unprecedented speed. This isn't about replacing humans, but augmenting our innate capabilities.</p>
+
+      <p>However, this shift brings up critical questions about copyright and the value of human-made art. As we move forward, the "human touch" might become a premium luxury in a sea of AI-generated content.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">Impact on Professional Sectors</h3>
+      <p>In healthcare, AI algorithms are diagnosing diseases from medical images with higher accuracy than human specialists. In finance, predictive models are managing risks and identifying fraudulent transactions in milliseconds. Even in software development, AI co-pilots are writing boilerplate code, allowing developers to focus on architecture and complex logic.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">Ethics and Governance</h3>
+      <p>With great power comes great responsibility. The risks of deepfakes, algorithmic bias, and job displacement are real. Governments around the world are scrambling to create frameworks that encourage innovation while protecting individual rights. The goal is "Human-Centric AI"—technology that serves humanity rather than exploiting it.</p>
+    `,
+  },
+  {
     title: 'My Smart India Hackathon Experience: Innovation Under Pressure',
     excerpt: 'A thrilling account of participating in the Smart India Hackathon, from ideation to implementation.',
     imageUrl: '/images1.jpeg',
@@ -49,6 +71,52 @@ const sampleBlogs = [
     `,
   },
   {
+    title: 'Exploring Scandinavia: A Guide to the Fjords and Northern Lights',
+    excerpt: 'Discover the breathtaking natural beauty and minimalist charm of Norway, Sweden, and Denmark.',
+    imageUrl: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=1000',
+    createdAt: new Date('2024-06-20'),
+    author: 'Global Nomad',
+    category: 'Travel',
+    content: `
+      <p class="lead">There is a specific kind of silence that you can only find in the Scandinavian wilderness. It's the sound of ancient glaciers shifting and the soft rustle of the Aurora Borealis dancing across a pitch-black sky.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">The Majestic Fjords of Norway</h3>
+      <p>Geirangerfjord and Nærøyfjord are UNESCO World Heritage sites for a reason. Sailing through these deep blue waters, surrounded by sheer mountain cliffs and cascading waterfalls like the "Seven Sisters," is a humbling experience. Hiking to Preikestolen (Pulpit Rock) offers a view that will stay with you forever.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">Stockholm: The Venice of the North</h3>
+      <p>Built on 14 islands, Stockholm perfectly blends history with modern design. The cobblestone streets of Gamla Stan (the Old Town) contrast beautifully with the sleek boutiques of Östermalm. Don't miss the Vasa Museum, which houses a remarkably preserved 17th-century warship.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">Hygge in Copenhagen</h3>
+      <p>The Danish concept of 'Hygge'—a quality of cosiness and comfortable conviviality—is evident everywhere in Copenhagen. Whether it's enjoying a coffee by the colorful Nyhavn harbor or cycling through the city's extensive bike paths, there's a sense of well-being that is contagious.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">Chasing the Aurora</h3>
+      <p>To see the Northern Lights, head to Tromsø or Lapland during the winter months. The experience of seeing curtains of green, purple, and red light shimmering above a snow-covered landscape is nothing short of magical. It requires patience and a bit of luck, but the reward is incomparable.</p>
+    `,
+  },
+  {
+    title: 'The Art of Mindful Living in a Hyper-Connected World',
+    excerpt: 'Practical strategies to reclaim your focus, reduce stress, and find balance in the age of digital distractions.',
+    imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=1000',
+    createdAt: new Date('2024-07-05'),
+    author: 'Serenity Seeker',
+    category: 'Lifestyle',
+    content: `
+      <p class="lead">We live in an era of "continuous partial attention." Our phones ping, our watches vibrate, and our minds are constantly jumping between tabs. Mindfulness is the antidote to this digital chaos.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">Start with Your Morning</h3>
+      <p>How you spend the first 30 minutes of your day sets the tone for everything else. Instead of reaching for your phone immediately, try 5 minutes of deep breathing or simply gazing out the window while your coffee brews. This small "buffer zone" prevents you from entering a reactive state of mind before you've even brushed your teeth.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">The Power of Single-Tasking</h3>
+      <p>Multitasking is a myth. Our brains actually switch rapidly between tasks, losing efficiency with every jump. Try "time-blocking"—dedicating specific chunks of time to a single activity without interruptions. You'll find that the quality of your work improves, and your stress levels decrease.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">Digital Detox Rituals</h3>
+      <p>Create "no-phone zones" in your home, especially the dining table and the bedroom. Setting a digital sunset—turning off screens an hour before bed—helps your brain produce the melatonin needed for deep, restorative sleep. Reconnect with physical hobbies like reading a paper book, gardening, or cooking a meal from scratch.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">Practicing Presence</h3>
+      <p>Mindfulness doesn't have to mean sitting on a cushion for hours. It means being fully present in whatever you are doing. When you walk, feel the ground beneath your feet. When you eat, taste every flavor. This presence transforms mundane moments into rich experiences and builds a lasting sense of inner peace.</p>
+    `,
+  },
+  {
     title: 'Getting Started with Full Stack Development: A Beginner\'s Guide',
     excerpt: 'A comprehensive roadmap for aspiring full stack developers, covering essential technologies and best practices.',
     imageUrl: '/vite.svg',
@@ -69,9 +137,29 @@ const sampleBlogs = [
 
       <h3 class="font-bold text-2xl mt-8 mb-4">Best Practices and Mindset</h3>
       <p>Emphasize clean code, responsive design, and security best practices. Stay curious and keep learning—technologies evolve rapidly. Remember, every expert was once a beginner. Be patient with yourself, and celebrate small victories along the way.</p>
+    `,
+  },
+  {
+    title: 'The Farm-to-Table Movement: Why Local Sourcing Matters',
+    excerpt: 'Exploring the benefits of sustainable eating, supporting local farmers, and the journey of food from soil to plate.',
+    imageUrl: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&q=80&w=1000',
+    createdAt: new Date('2024-08-14'),
+    author: 'Culinary Critic',
+    category: 'Food',
+    content: `
+      <p class="lead">In a world of fast food and global supply chains, the farm-to-table movement is a return to our roots. It's about knowing where your food comes from and celebrating the seasons.</p>
 
-      <h3 class="font-bold text-2xl mt-8 mb-4">Career Prospects</h3>
-      <p>Full stack developers are in high demand. With experience, you can work as a freelance developer, join startups, or work for established tech companies. The field offers flexibility, creativity, and the satisfaction of building complete applications from scratch.</p>
+      <h3 class="font-bold text-2xl mt-8 mb-4">What is Farm-to-Table?</h3>
+      <p>At its core, farm-to-table means that the food on your plate came directly from a local farm, skipping the middleman of long-distance shipping and industrial processing. This ensures maximum freshness and supports the local economy.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">Nutritional and Flavor Benefits</h3>
+      <p>Produce starts losing nutrients the moment it is harvested. A tomato picked yesterday at a local farm is objectively more nutritious and flavorful than one picked green and ripened in a truck over 3,000 miles. When you eat seasonally, you are eating food at its peak performance.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">Environmental Impact</h3>
+      <p>The average meal travels thousands of miles before reaching the consumer. By sourcing locally, we drastically reduce the carbon footprint associated with transportation. Furthermore, many small-scale local farmers use organic or regenerative practices that are better for the soil and biodiversity.</p>
+
+      <h3 class="font-bold text-2xl mt-8 mb-4">Supporting Your Community</h3>
+      <p>Every dollar spent at a local farm or a farm-to-table restaurant stays in the community. It helps preserve farmland and ensures that future generations have access to fresh, local food. It's a way of voting with your fork for a more sustainable and delicious future.</p>
     `,
   },
   {
@@ -92,15 +180,6 @@ const sampleBlogs = [
 
       <h3 class="font-bold text-2xl mt-8 mb-4">Customization and Configuration</h3>
       <p>Tailwind is highly customizable. You can extend the default theme, add custom utilities, and even create your own design system. The configuration file allows you to define your brand colors, fonts, and spacing scale, ensuring consistency across your project.</p>
-
-      <h3 class="font-bold text-2xl mt-8 mb-4">Performance Considerations</h3>
-      <p>One common concern is file size, but Tailwind's purge feature removes unused CSS in production. Modern build tools like Vite integrate seamlessly with Tailwind, ensuring optimal performance. The framework is designed to be fast and efficient.</p>
-
-      <h3 class="font-bold text-2xl mt-8 mb-4">Learning Curve and Adoption</h3>
-      <p>While the initial learning curve exists, the payoff is significant. Developers familiar with CSS pick it up quickly. Many teams have adopted Tailwind for its productivity gains and maintainability. It's particularly popular in React and Vue.js ecosystems.</p>
-
-      <h3 class="font-bold text-2xl mt-8 mb-4">Best Practices</h3>
-      <p>Use Tailwind's @apply directive for reusable component classes. Leverage responsive prefixes for mobile-first design. Combine utilities thoughtfully to avoid overly complex class lists. Remember, Tailwind doesn't replace CSS knowledge—it enhances it.</p>
     `,
   },
 ];

@@ -179,3 +179,39 @@ html.dark, body.dark {
 .equal-height-cards .card-content > *:last-child {
   margin-top: auto;
 }
+
+/* Accessibility Settings */
+.reduce-blur * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background-opacity: 1 !important;
+}
+
+.reduce-blur .backdrop-blur-md,
+.reduce-blur .backdrop-blur-lg,
+.reduce-blur .backdrop-blur-xl {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Make backgrounds more opaque when blur is reduced for readability */
+.reduce-blur .bg-slate-900\/70,
+.reduce-blur .bg-slate-900\/90,
+.reduce-blur .bg-slate-900\/95 {
+  background-color: rgb(15 23 42 / 0.95) !important;
+}
+
+.reduce-blur .bg-blue-50\/70,
+.reduce-blur .bg-blue-50\/90,
+.reduce-blur .bg-blue-50\/95 {
+  background-color: rgb(239 246 255 / 0.98) !important;
+}
+
+.reduce-animations *,
+.reduce-animations *::before,
+.reduce-animations *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

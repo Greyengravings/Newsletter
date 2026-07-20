@@ -9,23 +9,31 @@ import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import PostPage from './pages/PostPage';
 import AboutPage from './pages/AboutPage';
-import PortfolioPage from './pages/PortfolioPage';
 import ExplorePage from './pages/ExplorePage';
+import CategoriesPage from './pages/CategoriesPage';
+import ContactPage from './pages/ContactPage';
+import SubscribePage from './pages/SubscribePage';
 import AdminDashboard from './pages/AdminDashboard';
 import CombinedLoginPage from './pages/CombinedLoginPage';
 import UserProfilePage from './pages/UserProfilePage';
 
 // Separate component to use ThemeContext
 function AppContent() {
-  const { theme } = useContext(ThemeContext);
+  const { theme, reduceBlur, reduceAnimations } = useContext(ThemeContext);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
 
   useIdleTimeout(isLoggedIn, () => dispatch(logout()));
 
   useEffect(() => {
-    document.body.className = theme === 'dark' ? 'bg-gray-900' : 'bg-white';
-  }, [theme]);
+    const classes = [
+      theme === 'dark' ? 'bg-gray-900' : 'bg-white',
+      reduceBlur ? 'reduce-blur' : '',
+      reduceAnimations ? 'reduce-animations' : ''
+    ].filter(Boolean);
+
+    document.body.className = classes.join(' ');
+  }, [theme, reduceBlur, reduceAnimations]);
 
   return (
       <Router basename={import.meta.env.MODE === 'production' ? '/Newsletter' : '/'}>
@@ -36,16 +44,18 @@ function AppContent() {
       >
         <Header />
 
-        {/* Main content area with top padding to clear the fixed floating header */}
-        <main className="w-full flex-grow p-4 md:p-6 pt-32">
-          {/* Inner constrained content area */}
-          <div className="max-w-7xl mx-auto">
+        {/* Main content area - added mt-24 to ensure it starts below the fixed floating header */}
+        <main className="w-full flex-grow p-4 md:p-6 mt-24">
+          {/* Inner constrained content area - matching header width */}
+          <div className="max-w-[90%] mx-auto">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/post/:postId" element={<PostPage />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/portfolio" element={<PortfolioPage />} />
               <Route path="/explore" element={<ExplorePage />} />
+              <Route path="/categories" element={<CategoriesPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/subscribe" element={<SubscribePage />} />
               <Route path="/login" element={<CombinedLoginPage />} />
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
               <Route path="/user-profile" element={<UserProfilePage />} />

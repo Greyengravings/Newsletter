@@ -8,63 +8,74 @@ function PortfolioPage() {
 
   return (
     <div
-      className={`p-8 rounded-lg shadow-md flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-8 transition-colors duration-500 ${
-        theme === 'dark'
-          ? 'bg-gray-900 text-white'
-          : 'bg-white text-gray-900'
+      className={`min-h-screen p-4 md:p-12 flex items-center justify-center transition-colors duration-500 ${
+        theme === 'dark' ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'
       }`}
     >
-      {/* Image Section */}
-      <div className="md:w-1/2 flex justify-center">
-        <img
-          src={ProfileImg}
-          alt="Profile"
-          className="rounded-full shadow-lg w-65 h-65 object-cover"
-        />
-      </div>
+      <div className="flex items-start space-x-3 md:space-x-4 max-w-3xl w-full">
+        {/* Profile Image - Small and to the left */}
+        <div className="flex-shrink-0">
+          <img
+            src={ProfileImg}
+            alt="Profile"
+            className="w-10 h-10 md:w-12 md:h-12 rounded-full shadow-md object-cover border-2 border-white dark:border-gray-700"
+          />
+        </div>
 
-      {/* Text Section */}
-      <div className="md:w-1/2 text-center md:text-left">
-        <h1
-          className={`text-4xl font-extrabold mb-4 ${
-            theme === 'dark' ? 'text-white' : 'text-gray-900'
-          }`}
-        >
-          From The Developer
-        </h1>
-        <p
-          className={`text-lg mb-6 leading-relaxed ${
-            theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-          }`}
-        >
-          Hello! I'm a passionate and aspiring full-stack developer currently
-          honing my skills in creating dynamic and user-friendly web
-          applications. My journey in technology is driven by curiosity and a
-          desire to build solutions that make an impact. I'm always eager to
-          learn new technologies and apply them to real-world challenges.
-        </p>
-        <p
-          className={`text-lg mb-8 leading-relaxed ${
-            theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
-          }`}
-        >
-          This section is inspired by my portfolio website, where I showcase
-          various projects and delve into the technical intricacies of their
-          development. My aim is to deliver intuitive and responsive designs
-          that provide excellent user experiences.
-        </p>
-        <a
-          href="#"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`inline-block text-lg font-semibold px-8 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 ${
+        {/* Message Box / Content Section */}
+        <div
+          className={`relative flex-1 p-5 md:p-6 rounded-2xl shadow-lg transition-all duration-300 ${
             theme === 'dark'
-              ? 'bg-blue-500 hover:bg-blue-400 text-gray-900'
-              : 'bg-blue-600 hover:bg-blue-700 text-white'
+              ? 'bg-gray-800 text-gray-100'
+              : 'bg-white text-gray-800 border border-gray-100'
           }`}
         >
-          View Portfolio
-        </a>
+          {/* WhatsApp-style bubble tail */}
+          <div
+            className={`absolute top-4 -left-2 w-4 h-4 rotate-45 ${
+              theme === 'dark' ? 'bg-gray-800' : 'bg-white border-l border-b border-gray-100'
+            }`}
+          ></div>
+
+          {/* Sender Name (WhatsApp Group style) */}
+          <p className={`text-xs font-bold mb-1 uppercase tracking-tight ${
+            theme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+          }`}>
+            The Developer
+          </p>
+
+          <h1 className="text-xl md:text-2xl font-bold mb-3">
+            Portfolio Journey
+          </h1>
+
+          <div className="space-y-3 text-sm md:text-base leading-relaxed opacity-90">
+            <p>
+              Hello! I'm a passionate full-stack developer currently
+              honing my skills in creating dynamic and user-friendly web
+              applications.
+            </p>
+            <p>
+              My journey is driven by curiosity and a desire to build solutions
+              that make an impact. I love applying new tech to real-world challenges.
+            </p>
+          </div>
+
+          <div className="mt-4 flex items-center justify-between">
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`text-sm font-bold hover:underline ${
+                theme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+              }`}
+            >
+              View Full Portfolio →
+            </a>
+            <span className="text-[10px] opacity-50 italic">
+              Active now
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
