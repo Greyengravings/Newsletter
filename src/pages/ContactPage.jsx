@@ -13,7 +13,7 @@ function ContactPage() {
 
   return (
     <div className={`p-8 min-h-screen transition-colors duration-500 ${
-      theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
+      theme === 'dark' ? 'text-white' : 'text-gray-900'
     }`}>
       <div className="max-w-2xl mx-auto">
         <h1 className="text-4xl font-extrabold mb-4 text-center">Contact Us</h1>

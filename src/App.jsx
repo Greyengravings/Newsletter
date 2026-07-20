@@ -26,8 +26,19 @@ function AppContent() {
   useIdleTimeout(isLoggedIn, () => dispatch(logout()));
 
   useEffect(() => {
+    // Set theme classes on the html element instead of body to allow body::before to show
+    const html = document.documentElement;
+    if (theme === 'dark') {
+      html.classList.add('dark');
+      html.classList.remove('light');
+      html.style.backgroundColor = '#111827'; // bg-gray-900
+    } else {
+      html.classList.add('light');
+      html.classList.remove('dark');
+      html.style.backgroundColor = '#ffffff'; // white
+    }
+
     const classes = [
-      theme === 'dark' ? 'bg-gray-900' : 'bg-white',
       reduceBlur ? 'reduce-blur' : '',
       reduceAnimations ? 'reduce-animations' : ''
     ].filter(Boolean);
@@ -44,7 +55,7 @@ function AppContent() {
       <Router basename={import.meta.env.MODE === 'production' ? '/Newsletter' : '/'}>
       <div
         className={`min-h-screen flex flex-col w-full ${
-          theme === 'dark' ? 'bg-black-900 text-white' : 'bg-white text-black-900'
+          theme === 'dark' ? 'text-white' : 'text-black-900'
         }`}
       >
         <Header />

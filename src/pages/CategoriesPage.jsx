@@ -31,7 +31,7 @@ function CategoriesPage() {
 
   return (
     <div className={`p-4 md:p-8 min-h-screen transition-colors duration-500 ${
-      theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
+      theme === 'dark' ? 'text-white' : 'text-gray-900'
     }`}>
       <h1 className="text-3xl md:text-4xl font-extrabold mb-16 text-center tracking-tight">Categories</h1>
 

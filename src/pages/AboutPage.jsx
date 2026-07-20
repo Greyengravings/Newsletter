@@ -7,8 +7,8 @@ function AboutPage() {
 
   return (
     <div
-      className={`p-8 rounded-lg shadow-md transition-colors duration-500 ${
-        theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
+      className={`p-8 rounded-lg transition-colors duration-500 ${
+        theme === 'dark' ? 'text-white' : 'text-gray-900'
       }`}
     >
       <h1 className="text-2xl md:text-3xl font-extrabold mb-6 text-center">

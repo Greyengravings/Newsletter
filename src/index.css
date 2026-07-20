@@ -174,11 +174,14 @@ body::before {
     transform: scale(1.02);
   }
 }
-html.light, body.light {
+html.light {
   background-color: white;
 }
-html.dark, body.dark {
+html.dark {
   background-color: #111827;
+}
+body {
+  background-color: transparent !important;
 }
 
 /* Equal height cards for consistent layout */

@@ -92,7 +92,7 @@ function ExplorePage() {
 
   return (
     <div className="space-y-6 min-h-screen transition-all duration-500">
-      <div className={`space-y-6 ${theme === 'dark' ? 'bg-gray-900 text-white' : ''}`}>
+      <div className={`space-y-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
         <div className="text-center">
           <h1 className={`text-4xl font-bold mb-8 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             Explore All Posts

@@ -13,7 +13,7 @@ function SubscribePage() {
 
   return (
     <div className={`p-8 min-h-screen transition-colors duration-500 ${
-      theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
+      theme === 'dark' ? 'text-white' : 'text-gray-900'
     }`}>
       <div className="max-w-xl mx-auto text-center mt-12">
         <div className={`inline-block p-4 rounded-full mb-6 ${
