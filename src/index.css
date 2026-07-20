@@ -5,14 +5,12 @@
 html, body {
   overflow-x: hidden;
   max-width: 100%;
-  /* Respect system font size but ensure it doesn't feel oversized on small mobile devices */
-  font-size: 16px;
 }
 
-@media (max-width: 640px) {
-  html {
-    font-size: 14px; /* Slightly smaller base for mobile to allow more content to fit */
-  }
+/* Base font sizing: starts with system default (100% = usually 16px)
+   and allows users to scale via system settings. */
+html {
+  font-size: 100%;
 }
 
 /* Allow hero section to scroll naturally */

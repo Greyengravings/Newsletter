@@ -398,7 +398,7 @@ function Header() {
         {/* Mobile Navigation Card - separate from pill */}
         {isMenuOpen && (
           <nav
-            className={`md:hidden mt-2 p-6 shadow-xl backdrop-blur-md border rounded-[2rem] transition-all duration-300 ${
+            className={`md:hidden mt-2 p-6 shadow-xl backdrop-blur-md border rounded-[2rem] transition-all duration-300 max-h-[70vh] overflow-y-auto ${
               theme === 'dark'
                 ? 'bg-slate-900/90 border-white/10 text-white'
                 : 'bg-blue-50/90 border-blue-200/50 text-gray-900'

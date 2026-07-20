@@ -162,34 +162,8 @@ function AboutPage() {
       {/* Creator & Portfolio Section - Responsive Row */}
       <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row gap-8 items-start">
 
-        {/* About the Creator Section */}
-        <section className="flex-1">
-          <h2 className="text-3xl font-bold mb-6 text-center md:text-left">
-            About the Creator & The Blog's Purpose
-          </h2>
-
-          <div
-            className={`space-y-6 leading-relaxed text-center md:text-left ${
-              theme === 'dark' ? 'text-gray-300' : 'text-gray-800'
-            }`}>
-            <p>
-              This personal blog & CMS was conceptualized and developed by Hitesh
-              Nihalani from the IT Dept. at VESIT, Chembur, Mumbai.
-            </p>
-            <p>
-              The entire frontend UI, from initial setup to current design, was
-              built iteratively over 2-3 days of learning and implementation.
-            </p>
-            <p>
-              This blog serves as a personal repository for thoughts, tutorials,
-              project showcases, and learning experiences — aiming to share
-              knowledge and inspire fellow students and enthusiasts.
-            </p>
-          </div>
-        </section>
-
-        {/* Developer Portfolio Section (WhatsApp Style) */}
-        <section id="portfolio" className="flex-1 flex justify-center md:justify-end">
+        {/* Developer Portfolio Section (WhatsApp Style) - NOW ON LEFT */}
+        <section id="portfolio" className="flex-1 flex justify-center md:justify-start order-2 md:order-1">
           <div className="flex items-start space-x-3 md:space-x-4 w-full max-w-lg">
             {/* Profile Image - Small and to the left */}
             <div className="flex-shrink-0">
@@ -254,6 +228,32 @@ function AboutPage() {
                 </span>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* About the Creator Section - NOW ON RIGHT */}
+        <section className="flex-1 order-1 md:order-2">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center md:text-left">
+            About the Creator & The Blog's Purpose
+          </h2>
+
+          <div
+            className={`space-y-6 leading-relaxed text-center md:text-left ${
+              theme === 'dark' ? 'text-gray-300' : 'text-gray-800'
+            }`}>
+            <p>
+              This personal blog & CMS was conceptualized and developed by Hitesh
+              Nihalani from the IT Dept. at VESIT, Chembur, Mumbai.
+            </p>
+            <p>
+              The entire frontend UI, from initial setup to current design, was
+              built iteratively over 2-3 days of learning and implementation.
+            </p>
+            <p>
+              This blog serves as a personal repository for thoughts, tutorials,
+              project showcases, and learning experiences — aiming to share
+              knowledge and inspire fellow students and enthusiasts.
+            </p>
           </div>
         </section>
       </div>
