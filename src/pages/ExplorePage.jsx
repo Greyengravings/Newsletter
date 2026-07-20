@@ -24,7 +24,6 @@ function ExplorePage() {
 
   useEffect(() => {
     document.title = "Explore - The Digital Canvas Blog";
-    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {

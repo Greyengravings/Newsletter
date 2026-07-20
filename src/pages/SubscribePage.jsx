@@ -43,7 +43,7 @@ function SubscribePage() {
   ];
 
   return (
-    <div className={`p-8 min-h-screen transition-colors duration-500 ${
+    <div className={`py-8 md:p-8 min-h-screen transition-colors duration-500 ${
       theme === 'dark' ? 'text-white' : 'text-gray-900'
     }`}>
       <div className="max-w-4xl mx-auto text-center mt-12">

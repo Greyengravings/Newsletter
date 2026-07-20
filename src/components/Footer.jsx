@@ -20,7 +20,7 @@ function Footer() {
 
   return (
     <footer className="bg-gray-900 text-white w-full">
-      <div className="max-w-[90%] mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="w-[95%] md:max-w-[90%] mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-12 gap-12">
 
           {/* Column 1: The Developer's Blog */}

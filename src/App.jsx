@@ -6,6 +6,7 @@ import { logout } from './features/auth/authSlice';
 import useIdleTimeout from './hooks/useIdleTimeout';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HomePage';
 import PostPage from './pages/PostPage';
 import AboutPage from './pages/AboutPage';
@@ -59,6 +60,7 @@ function AppContent() {
 
   return (
       <Router basename={import.meta.env.MODE === 'production' ? '/Newsletter' : '/'}>
+      <ScrollToTop />
       <div
         className={`min-h-screen flex flex-col w-full ${
           theme === 'dark' ? 'text-white' : 'text-black-900'
@@ -67,9 +69,9 @@ function AppContent() {
         <Header />
 
         {/* Main content area - added mt-24 to ensure it starts below the fixed floating header */}
-        <main className="w-full flex-grow p-4 md:p-6 mt-24">
+        <main className="w-full flex-grow p-0 md:p-6 mt-24">
           {/* Inner constrained content area - matching header width */}
-          <div className="max-w-[90%] mx-auto">
+          <div className="w-[95%] md:w-full md:max-w-[90%] mx-auto">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/post/:postId" element={<PostPage />} />

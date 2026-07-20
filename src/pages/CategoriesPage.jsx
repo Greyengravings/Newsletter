@@ -50,7 +50,7 @@ function CategoriesPage() {
               <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-300" />
             </button>
 
-            <span className={`mt-6 text-[11px] font-bold tracking-[0.2em] uppercase text-center transition-colors duration-300 ${
+            <span className={`mt-6 text-sm font-bold tracking-[0.2em] uppercase text-center transition-colors duration-300 ${
               theme === 'dark' ? 'text-gray-500 group-hover:text-blue-400' : 'text-gray-400 group-hover:text-blue-600'
             }`}>
               {cat.name}

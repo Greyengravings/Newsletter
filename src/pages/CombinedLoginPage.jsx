@@ -124,11 +124,11 @@ function CombinedLoginPage() {
   }`;
 
   return (
-    <div className={`flex items-center justify-center min-h-[calc(100vh-160px)] p-6 transition-colors duration-500`}>
+    <div className={`flex items-center justify-center min-h-[calc(100vh-160px)] py-6 transition-colors duration-500`}>
       <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
         {/* Left Column: Email Login/Signup */}
-        <div className={`relative p-8 md:p-12 rounded-[2.5rem] shadow-2xl w-full transition-all duration-500 ${
+        <div className={`relative p-6 md:p-12 rounded-[2.5rem] shadow-2xl w-full overflow-hidden transition-all duration-500 ${
           theme === 'dark'
             ? 'bg-gray-800 border border-gray-700'
             : 'bg-white border border-blue-50'

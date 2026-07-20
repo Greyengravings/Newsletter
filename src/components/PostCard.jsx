@@ -68,7 +68,7 @@ function PostCard({ post }) {
           <img
             src={post.imageUrl}
             alt={post.title}
-            className="w-full h-48 object-cover"
+            className="w-full aspect-[4/3] object-cover"
           />
           {/* Category Tag */}
           <span className="absolute top-4 left-4 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">

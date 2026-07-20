@@ -139,8 +139,8 @@ function Header() {
   }, [isLoggedIn, username, role]);
 
   return (
-    <header ref={headerRef} className="fixed top-4 z-50 w-full px-4 left-0 right-0">
-      <div className="max-w-[90%] mx-auto relative">
+    <header ref={headerRef} className="fixed top-4 z-50 w-full left-0 right-0">
+      <div className="w-[95%] md:max-w-[90%] mx-auto relative">
         {/* Main Pill */}
         <div
           className={`transition-all duration-500 overflow-hidden shadow-lg backdrop-blur-md border rounded-full ${

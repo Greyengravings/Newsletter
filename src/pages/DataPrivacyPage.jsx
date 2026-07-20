@@ -17,7 +17,7 @@ function DataPrivacyPage() {
   }`;
 
   return (
-    <div className={`max-w-4xl mx-auto py-12 px-6 transition-colors duration-500 ${
+    <div className={`max-w-4xl mx-auto py-12 transition-colors duration-500 ${
       theme === 'dark' ? 'text-white' : 'text-gray-900'
     }`}>
       <header className="text-center mb-16">

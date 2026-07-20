@@ -15,15 +15,16 @@ function HeroSection({ posts }) {
   const buttonStyles = "inline-block border-2 border-blue-600 text-white bg-blue-600/50 backdrop-blur-sm px-4 py-1.5 rounded-lg hover:bg-blue-600 hover:text-white transition-all duration-300 font-semibold text-sm";
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 mb-12">
-      <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-4 aspect-[2/3] md:aspect-[16/9] lg:aspect-[21/9]">
+    <div className="w-full max-w-7xl mx-auto px-0 md:px-4 mb-12">
+      <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-4">
         
         {/* Post 1 - Large (2x2) */}
         {heroPosts[0] && (
           <div className="col-span-2 row-span-2 md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-3xl shadow-lg border border-gray-200 dark:border-gray-800">
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-              style={{ backgroundImage: `url(${heroPosts[0].imageUrl})` }}
+            <img
+              src={heroPosts[0].imageUrl}
+              alt={heroPosts[0].title}
+              className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
@@ -43,9 +44,11 @@ function HeroSection({ posts }) {
         {/* Post 2 - Wide (2x1) */}
         {heroPosts[1] && (
           <div className="col-span-2 row-span-1 md:col-span-2 md:row-span-1 relative group overflow-hidden rounded-3xl shadow-lg border border-gray-200 dark:border-gray-800">
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-              style={{ backgroundImage: `url(${heroPosts[1].imageUrl})` }}
+            <img
+              src={heroPosts[1].imageUrl}
+              alt={heroPosts[1].title}
+              className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              style={{ aspectRatio: '8/3' }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-end p-5 md:p-6">
@@ -63,9 +66,10 @@ function HeroSection({ posts }) {
         {/* Post 3 - Standard (1x1) */}
         {heroPosts[2] && (
           <div className="md:col-span-1 md:row-span-1 relative group overflow-hidden rounded-3xl shadow-lg border border-gray-200 dark:border-gray-800">
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-              style={{ backgroundImage: `url(${heroPosts[2].imageUrl})` }}
+            <img
+              src={heroPosts[2].imageUrl}
+              alt={heroPosts[2].title}
+              className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-end p-4">
@@ -81,9 +85,10 @@ function HeroSection({ posts }) {
         {/* Post 4 - Standard (1x1) */}
         {heroPosts[3] && (
           <div className="md:col-span-1 md:row-span-1 relative group overflow-hidden rounded-3xl shadow-lg border border-gray-200 dark:border-gray-800">
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-              style={{ backgroundImage: `url(${heroPosts[3].imageUrl})` }}
+            <img
+              src={heroPosts[3].imageUrl}
+              alt={heroPosts[3].title}
+              className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-end p-4">

@@ -7,7 +7,7 @@ function AboutPage() {
 
   return (
     <div
-      className={`p-8 rounded-lg transition-colors duration-500 ${
+      className={`py-8 md:p-8 rounded-lg transition-colors duration-500 ${
         theme === 'dark' ? 'text-white' : 'text-gray-900'
       }`}
     >

@@ -30,7 +30,6 @@ function HomePage() {
 
   useEffect(() => {
     document.title = "The Digital Canvas Blog";
-    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {

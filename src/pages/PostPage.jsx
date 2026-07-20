@@ -12,7 +12,6 @@ function PostPage() {
 
   useEffect(() => {
     document.title = "My Blog | Post";
-    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
@@ -40,7 +39,7 @@ function PostPage() {
         : 'bg-white' // White background for light mode
     }`}>
       {/* Post Banner Image */}
-      <img src={currentPost.imageUrl} alt={currentPost.title} className="w-full h-64 md:h-96 object-cover" />
+      <img src={currentPost.imageUrl} alt={currentPost.title} className="w-full aspect-video md:h-96 object-cover" />
 
       <div className="p-6 md:p-12">
         <h1 className={`text-4xl md:text-5xl font-extrabold mb-4 ${

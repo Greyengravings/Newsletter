@@ -23,7 +23,7 @@ function ContactPage() {
   }`;
 
   return (
-    <div className={`p-4 md:p-8 min-h-screen transition-colors duration-500 ${
+    <div className={`py-4 md:p-8 min-h-screen transition-colors duration-500 ${
       theme === 'dark' ? 'text-white' : 'text-gray-900'
     }`}>
       <div className="max-w-7xl mx-auto lg:ml-[5%] xl:ml-[10%]">

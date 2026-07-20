@@ -238,7 +238,7 @@ function AdminDashboard() {
   };
 
   return (
-    <div className={`max-w-6xl mx-auto p-6 transition-all duration-500 ${
+    <div className={`max-w-6xl mx-auto py-6 transition-all duration-500 ${
       theme === 'dark'
         ? 'bg-gray-900 text-white'
         : 'bg-gray-50 text-gray-900'
@@ -258,7 +258,7 @@ function AdminDashboard() {
         </button>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         {/* Left Column - Edit Profile Section */}
         <div className="flex-1">
           <div className={`p-4 border rounded-xl transition-all duration-500 h-full ${
