@@ -58,11 +58,11 @@ function PostCard({ post }) {
 
   return (
     <div className="block">
-      <div className={`rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 ease-in-out group ${
+      <div className={`rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 ease-in-out group border ${
         theme === 'dark'
-          ? 'bg-gray-800' // Dark background for dark mode
-          : 'bg-white' // White background for light mode
-      }`}>
+          ? 'bg-slate-900/60 border-white/10' // Semi-transparent dark
+          : 'bg-white/60 border-gray-200/50' // Semi-transparent light
+      } backdrop-blur-sm`}>
         {/* Blog Post Image */}
         <div className="relative">
           <img

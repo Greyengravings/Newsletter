@@ -8,7 +8,7 @@ const titles = [
   "The Student Coder's",
 ];
 
-function AnimatedTitle() {
+function AnimatedTitle({ isDark }) {
   const [titleIndex, setTitleIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -46,7 +46,7 @@ function AnimatedTitle() {
     <span className="flex items-center text-2xl font-bold">
       <span className="text-blue-600">{displayedText}</span>
       <span className="blinking-cursor h-7 w-[1px] bg-blue-600 ml-1"></span>
-      <span className="ml-2 text-black-1000">Blog</span> 
+      <span className={`ml-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Blog</span>
     </span>
   );
 }

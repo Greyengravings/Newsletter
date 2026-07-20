@@ -19,15 +19,42 @@ body::before {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.8; /* 80% opacity as requested */
-  background-image: var(--doodle-url);
   background-repeat: repeat;
-  background-size: 300px; /* Tiled size */
-  transition: opacity 0.5s ease-in-out;
+  background-size: 350px;
+  transition: opacity 0.5s ease-in-out, background-image 0.3s ease;
+}
+
+/* Light mode doodle - 50% opacity */
+html:not(.dark) body::before {
+  background-image: url('/lightdoodle.jpg');
+  opacity: 0.2;
+}
+
+/* Dark mode doodle - 80% opacity */
+html.dark body::before {
+  background-image: url('/darkdoodle.jpg');
+  opacity: 0.2;
+}
+
+/* Production path overrides for GH Pages */
+@media screen and (min-width: 0px) {
+  html:not(.dark).prod body::before {
+    background-image: url('/Newsletter/lightdoodle.jpg');
+  }
+  html.dark.prod body::before {
+    background-image: url('/Newsletter/darkdoodle.jpg');
+  }
+}
+
+/* Ensure no element accidentally covers the background */
+#root {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
 }
 
 /* Allow hero section to scroll naturally */
@@ -175,13 +202,14 @@ body::before {
   }
 }
 html.light {
-  background-color: white;
+  background-color: #f9fafb; /* Slightly off-white for better doodle contrast */
 }
 html.dark {
-  background-color: #111827;
+  background-color: #0f172a; /* Deep slate for dark doodle */
 }
 body {
   background-color: transparent !important;
+  min-height: 100vh;
 }
 
 /* Equal height cards for consistent layout */

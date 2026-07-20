@@ -16,6 +16,8 @@ import SubscribePage from './pages/SubscribePage';
 import AdminDashboard from './pages/AdminDashboard';
 import CombinedLoginPage from './pages/CombinedLoginPage';
 import UserProfilePage from './pages/UserProfilePage';
+import DataPrivacyPage from './pages/DataPrivacyPage';
+import TermsOfUsePage from './pages/TermsOfUsePage';
 
 // Separate component to use ThemeContext
 function AppContent() {
@@ -28,14 +30,18 @@ function AppContent() {
   useEffect(() => {
     // Set theme classes on the html element instead of body to allow body::before to show
     const html = document.documentElement;
+
+    // Add prod class for CSS path overrides if in production
+    if (import.meta.env.MODE === 'production') {
+      html.classList.add('prod');
+    }
+
     if (theme === 'dark') {
       html.classList.add('dark');
       html.classList.remove('light');
-      html.style.backgroundColor = '#111827'; // bg-gray-900
     } else {
       html.classList.add('light');
       html.classList.remove('dark');
-      html.style.backgroundColor = '#ffffff'; // white
     }
 
     const classes = [
@@ -48,7 +54,7 @@ function AppContent() {
     // Set background doodle based on theme
     const baseUrl = import.meta.env.MODE === 'production' ? '/Newsletter' : '';
     const doodleUrl = theme === 'dark' ? `${baseUrl}/darkdoodle.jpg` : `${baseUrl}/lightdoodle.jpg`;
-    document.documentElement.style.setProperty('--doodle-url', `url(${doodleUrl})`);
+    document.documentElement.style.setProperty('--doodle-url', `url("${doodleUrl}")`);
   }, [theme, reduceBlur, reduceAnimations]);
 
   return (
@@ -75,6 +81,8 @@ function AppContent() {
               <Route path="/login" element={<CombinedLoginPage />} />
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
               <Route path="/user-profile" element={<UserProfilePage />} />
+              <Route path="/privacy" element={<DataPrivacyPage />} />
+              <Route path="/terms" element={<TermsOfUsePage />} />
             </Routes>
           </div>
         </main>

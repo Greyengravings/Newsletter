@@ -153,7 +153,7 @@ function Header() {
             {/* Logo Section */}
             <div className="flex-shrink-0 z-10">
               <NavLink to="/" onClick={closeMenu}>
-                <AnimatedTitle />
+                <AnimatedTitle isDark={theme === 'dark'} />
               </NavLink>
             </div>
 
