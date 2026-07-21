@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { ThemeContext } from '../context/ThemeContext';
 import { login } from '../features/auth/authSlice';
 import axios from 'axios';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function CombinedLoginPage() {
   const { theme } = useContext(ThemeContext);
@@ -20,32 +21,37 @@ function CombinedLoginPage() {
   const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
+    setIsLoading(true);
 
     // Basic client validation
     if (!email || !password) {
       setError('Please fill in all the required fields.');
+      setIsLoading(false);
       return;
     }
 
     if (role === 'admin' && !specialId) {
-      setError('Please enter the secret code.');
+      setError('Please enter Your Admin Key.');
+      setIsLoading(false);
       return;
     }
 
     const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
-    if (isRegister) {
-      if (!username) {
-        setError('Please enter a username.');
-        return;
-      }
+    try {
+      if (isRegister) {
+        if (!username) {
+          setError('Please enter a username.');
+          setIsLoading(false);
+          return;
+        }
 
-      try {
         let response;
         if (role === 'user') {
           response = await axios.post(`${apiUrl}/user/register`, {
@@ -70,12 +76,9 @@ function CombinedLoginPage() {
         // Reset sensitive fields
         setPassword('');
         setSpecialId('');
-      } catch (err) {
-        setError(err.response?.data?.message || 'Registration failed.');
-      }
-    } else {
-      // Login Logic
-      try {
+        setIsLoading(false);
+      } else {
+        // Login Logic
         let response;
         if (role === 'user') {
           response = await axios.post(`${apiUrl}/user/login`, {
@@ -92,6 +95,9 @@ function CombinedLoginPage() {
               token: response.data.token,
             }));
             setTimeout(() => navigate('/'), 1200);
+            // We keep isLoading true until navigation
+          } else {
+            setIsLoading(false);
           }
         } else {
           // Admin login
@@ -109,11 +115,15 @@ function CombinedLoginPage() {
               role: 'admin',
             }));
             setTimeout(() => navigate('/'), 1200);
+            // We keep isLoading true until navigation
+          } else {
+            setIsLoading(false);
           }
         }
-      } catch (err) {
-        setError(err.response?.data?.message || 'Login failed. Please check credentials.');
       }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login/Registration failed.');
+      setIsLoading(false);
     }
   };
 
@@ -147,29 +157,47 @@ function CombinedLoginPage() {
             </p>
           </header>
 
-          {/* Role Switcher - Modern Pill Design */}
-          <div className={`mb-10 flex p-1 rounded-2xl ${
+          {/* Role Switcher - Modern Sliding Design */}
+          <div className={`mb-10 flex p-1 rounded-2xl relative ${
             theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
           }`}>
             <button
               onClick={() => setRole('user')}
-              className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 ${
+              className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-colors duration-300 relative z-10 ${
                 role === 'user'
-                  ? (theme === 'dark' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-white text-blue-600 shadow-md')
+                  ? (theme === 'dark' ? 'text-white' : 'text-blue-600')
                   : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
-              User Access
+              User
+              {role === 'user' && (
+                <motion.div
+                  layoutId="activeRole"
+                  className={`absolute inset-0 rounded-xl shadow-md z-[-1] ${
+                    theme === 'dark' ? 'bg-blue-600 shadow-blue-600/20' : 'bg-white shadow-md'
+                  }`}
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
             </button>
             <button
               onClick={() => setRole('admin')}
-              className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 ${
+              className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-colors duration-300 relative z-10 ${
                 role === 'admin'
-                  ? (theme === 'dark' ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-white text-blue-600 shadow-md')
+                  ? (theme === 'dark' ? 'text-white' : 'text-blue-600')
                   : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
-              Admin Panel
+              Admin
+              {role === 'admin' && (
+                <motion.div
+                  layoutId="activeRole"
+                  className={`absolute inset-0 rounded-xl shadow-md z-[-1] ${
+                    theme === 'dark' ? 'bg-blue-600 shadow-blue-600/20' : 'bg-white shadow-md'
+                  }`}
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
             </button>
           </div>
 
@@ -242,7 +270,7 @@ function CombinedLoginPage() {
             </div>
             {role === 'admin' && (
               <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
-                <label className="block text-sm font-bold px-1">Administrative Secret Code</label>
+                <label className="block text-sm font-bold px-1">Your Admin Key</label>
                 <input
                   type="password"
                   className={inputClasses}
@@ -256,9 +284,43 @@ function CombinedLoginPage() {
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full py-4 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] bg-blue-600 text-white hover:bg-blue-700 shadow-blue-600/20 hover:shadow-blue-600/40"
+                disabled={isLoading}
+                className={`w-full py-4 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 transform flex items-center justify-center gap-3 ${
+                  isLoading ? 'opacity-80 cursor-not-allowed' : 'hover:scale-[1.02] active:scale-[0.98]'
+                } bg-blue-600 text-white hover:bg-blue-700 shadow-blue-600/20 hover:shadow-blue-600/40`}
               >
-                {isRegister ? 'Create Account' : 'Sign In'}
+                {isLoading ? (
+                  <>
+                    <svg
+                      className="h-6 w-6"
+                      viewBox="0 0 128 128"
+                    >
+                      <circle
+                        r="56"
+                        cx="64"
+                        cy="64"
+                        fill="none"
+                        stroke="hsla(0,0%,100%,0.2)"
+                        strokeWidth="16"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        className="pl__worm"
+                        d="M92,15.492S78.194,4.967,66.743,16.887c-17.231,17.938-28.26,96.974-28.26,96.974L119.85,59.892l-99-31.588,57.528,89.832L97.8,19.349,13.636,88.51l89.012,16.015S81.908,38.332,66.1,22.337C50.114,6.156,36,15.492,36,15.492a56,56,0,1,0,56,0Z"
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="16"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeDasharray="44 1111"
+                        strokeDashoffset="10"
+                      />
+                    </svg>
+                    <span>{isRegister ? 'Creating Account...' : 'Signing In...'}</span>
+                  </>
+                ) : (
+                  isRegister ? 'Create Account' : 'Sign In'
+                )}
               </button>
             </div>
           </form>
