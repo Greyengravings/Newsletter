@@ -61,7 +61,7 @@ function SubscribePage() {
         </p>
 
         {/* Subscribe Form Card */}
-        <div className={`p-8 md:p-12 rounded-[3rem] shadow-2xl mb-16 relative overflow-hidden transition-all duration-500 ${
+        <div className={`p-8 md:p-12 rounded-[2.5rem] shadow-2xl mb-16 relative overflow-hidden transition-all duration-500 ${
           theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-blue-100'
         }`}>
           {/* Subtle background glow for the card */}
@@ -102,14 +102,14 @@ function SubscribePage() {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className={`group relative p-8 rounded-[2.5rem] transition-all duration-500 overflow-hidden ${
+              className={`group relative p-8 rounded-3xl transition-all duration-500 overflow-hidden ${
                 theme === 'dark'
                   ? 'bg-blue-900/10 border border-blue-500/20 hover:border-blue-400/50'
                   : 'bg-blue-50/50 border border-blue-100 hover:border-blue-300 shadow-xl shadow-blue-500/5'
               }`}
             >
               {/* Animated background glow on hover */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-[2.5rem] opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur"></div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur"></div>
 
               <div className="relative z-10">
                 <div className={`text-4xl md:text-5xl font-black mb-3 tabular-nums tracking-tighter ${

@@ -41,7 +41,7 @@ function ContactPage() {
             </header>
 
             {/* Form Card */}
-            <div className={`p-6 md:p-10 rounded-[2.5rem] shadow-2xl transition-all duration-300 ${
+            <div className={`p-6 md:p-10 rounded-xl shadow-2xl transition-all duration-300 ${
               theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-blue-50'
             }`}>
               <form onSubmit={handleSubmit} className="space-y-8">
@@ -114,7 +114,7 @@ function ContactPage() {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 transition-all duration-300 transform hover:scale-[1.01] active:scale-[0.99]"
+                    className="w-full py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 transition-all duration-300 transform hover:scale-[1.01] active:scale-[0.99]"
                   >
                     Send Message
                   </button>

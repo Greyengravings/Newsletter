@@ -8,10 +8,12 @@ const sampleBlogs = [
   {
     title: 'A Journey Through VESIT: More Than Just an Engineering College',
     excerpt: 'An immersive experience at Vivekanand Education Society\'s Institute of Technology, exploring academics, culture, and personal growth.',
-    imageUrl: '/images.jpeg',
+    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxm12O2yAp1cMyhZhm6VwsPHBChcH6IGDHuvfD6vepOb0sT4-A44dsS8Pz&s=10',
     createdAt: new Date('2024-01-15'),
     author: 'A Proud VESITian',
     category: 'Education',
+    views: Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000,
+    likes: Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000,
     content: `
       <p class="lead">Nestled in the heart of Chembur, Mumbai, the Vivekanand Education Society's Institute of Technology—or VESIT, as we affectionately call it—is more than just a place to earn a degree. It's a vibrant ecosystem of innovation, friendship, and learning that shapes you for the world beyond the classroom.</p>
 
@@ -50,7 +52,7 @@ const sampleBlogs = [
   {
     title: 'My Smart India Hackathon Experience: Innovation Under Pressure',
     excerpt: 'A thrilling account of participating in the Smart India Hackathon, from ideation to implementation.',
-    imageUrl: '/images1.jpeg',
+    imageUrl: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1000',
     createdAt: new Date('2024-02-10'),
     author: 'Hackathon Enthusiast',
     category: 'Technology',
@@ -119,7 +121,7 @@ const sampleBlogs = [
   {
     title: 'Getting Started with Full Stack Development: A Beginner\'s Guide',
     excerpt: 'A comprehensive roadmap for aspiring full stack developers, covering essential technologies and best practices.',
-    imageUrl: '/vite.svg',
+    imageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1000',
     createdAt: new Date('2024-03-05'),
     author: 'Dev Learner',
     category: 'Technology',
@@ -165,7 +167,7 @@ const sampleBlogs = [
   {
     title: 'A Deep Dive into Tailwind CSS: Utility-First Styling',
     excerpt: 'Exploring the philosophy, features, and practical applications of Tailwind CSS for modern web development.',
-    imageUrl: '/Tailwindcss.jpeg',
+    imageUrl: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?auto=format&fit=crop&q=80&w=1000',
     createdAt: new Date('2024-04-01'),
     author: 'CSS Enthusiast',
     category: 'Technology',
@@ -189,8 +191,15 @@ mongoose.connect(mongoURI)
     console.log('Connected to MongoDB for seeding blogs');
     await Blog.deleteMany({});
     console.log('Cleared existing blogs');
-    await Blog.insertMany(sampleBlogs);
-    console.log('Inserted sample blogs');
+
+    const blogsWithStats = sampleBlogs.map(blog => ({
+      ...blog,
+      views: Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000,
+      likes: Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000
+    }));
+
+    await Blog.insertMany(blogsWithStats);
+    console.log('Inserted sample blogs with random stats');
     mongoose.disconnect();
   })
   .catch(err => {

@@ -9,6 +9,7 @@ const blogSchema = new mongoose.Schema({
   category: String,
   content: String,
   views: { type: Number, default: 0 },
+  likes: { type: Number, default: 0 },
   bookmarkedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
 

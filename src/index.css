@@ -1,19 +1,30 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "../node_modules/@heroui/styles/dist/heroui.min.css";
+
+@source "../index.html";
+@source "./**/*.{js,ts,jsx,tsx}";
+
+@plugin "@tailwindcss/typography";
+@plugin "tailwind-scrollbar-hide";
+
+@theme {
+  --animate-continuous-roll: continuous-roll 10s linear infinite;
+
+  @keyframes continuous-roll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-3.6em); }
+  }
+}
 
 html, body {
   overflow-x: hidden;
   max-width: 100%;
 }
 
-/* Base font sizing: starts with system default (100% = usually 16px)
-   and allows users to scale via system settings. */
 html {
   font-size: 100%;
 }
 
-/* Doodle Background Implementation */
 body::before {
   content: "";
   position: fixed;
@@ -28,19 +39,16 @@ body::before {
   transition: opacity 0.5s ease-in-out, background-image 0.3s ease;
 }
 
-/* Light mode doodle - 50% opacity */
 html:not(.dark) body::before {
   background-image: url('/lightdoodle.jpg');
   opacity: 0.2;
 }
 
-/* Dark mode doodle - 80% opacity */
 html.dark body::before {
   background-image: url('/darkdoodle.jpg');
   opacity: 0.2;
 }
 
-/* Production path overrides for GH Pages */
 @media screen and (min-width: 0px) {
   html:not(.dark).prod body::before {
     background-image: url('/Newsletter/lightdoodle.jpg');
@@ -50,25 +58,19 @@ html.dark body::before {
   }
 }
 
-/* Ensure no element accidentally covers the background */
 #root {
   position: relative;
   z-index: 1;
   background: transparent !important;
 }
 
-/* Allow hero section to scroll naturally */
 .hero-container {
   overflow-x: visible;
 }
 
 @keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-500%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-500%); }
 }
 
 .animate-scroll {
@@ -76,48 +78,24 @@ html.dark body::before {
 }
 
 @keyframes blink {
-  50% {
-    opacity: 0;
-  }
+  50% { opacity: 0; }
 }
 
 .blinking-cursor {
   animation: blink 1s step-end infinite;
 }
 
-@keyframes loading-bar {
-  0% {
-    width: 0%;
-  }
-  50% {
-    width: 100%;
-  }
-  100% {
-    width: 0%;
-  }
-}
-
-/* Smooth Loading Animation with Physics */
 .smooth-loader {
   animation: gentle-float 6s ease-in-out infinite;
 }
 
 @keyframes gentle-float {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-2px) rotate(0.5deg);
-  }
-  50% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  75% {
-    transform: translateY(2px) rotate(-0.5deg);
-  }
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-2px) rotate(0.5deg); }
+  50% { transform: translateY(0px) rotate(0deg); }
+  75% { transform: translateY(2px) rotate(-0.5deg); }
 }
 
-/* Collision Spark Effect */
 .collision-spark {
   position: absolute;
   top: 50%;
@@ -132,87 +110,43 @@ html.dark body::before {
 }
 
 @keyframes collision-burst {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0);
-  }
-  15% {
-    opacity: 0;
-  }
-  16% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  20% {
-    opacity: 0.8;
-    transform: translate(-50%, -50%) scale(2);
-  }
-  25% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(3);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0);
-  }
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+  16% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  20% { opacity: 0.8; transform: translate(-50%, -50%) scale(2); }
+  25% { opacity: 0; transform: translate(-50%, -50%) scale(3); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
 }
 
-/* Enhanced Worm Animation */
 .pl__worm {
   animation: smooth-worm 4s cubic-bezier(0.42, 0.17, 0.75, 0.83) infinite;
   filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.3));
 }
 
 @keyframes smooth-worm {
-  from {
-    stroke-dashoffset: 10;
-    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.3));
-  }
-  25% {
-    stroke-dashoffset: 295;
-    filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.5));
-  }
-  50% {
-    stroke-dashoffset: 600;
-    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.3));
-  }
-  75% {
-    stroke-dashoffset: 900;
-    filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.6));
-  }
-  to {
-    stroke-dashoffset: 1165;
-    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.3));
-  }
+  from { stroke-dashoffset: 10; }
+  25% { stroke-dashoffset: 295; }
+  50% { stroke-dashoffset: 600; }
+  75% { stroke-dashoffset: 900; }
+  to { stroke-dashoffset: 1165; }
 }
 
-/* Ring pulse effect */
 .pl__ring {
   animation: ring-pulse 4s ease-in-out infinite;
 }
 
 @keyframes ring-pulse {
-  0%, 100% {
-    opacity: 0.1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.3;
-    transform: scale(1.02);
-  }
+  0%, 100% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.02); }
 }
-html.light {
-  background-color: #f9fafb; /* Slightly off-white for better doodle contrast */
-}
-html.dark {
-  background-color: #0f172a; /* Deep slate for dark doodle */
-}
+
+html.light { background-color: #f9fafb; }
+html.dark { background-color: #0f172a; }
+
 body {
   background-color: transparent !important;
   min-height: 100vh;
 }
 
-/* Equal height cards for consistent layout */
 .equal-height-cards {
   display: flex;
   flex-direction: column;
@@ -224,31 +158,11 @@ body {
   flex-direction: column;
 }
 
-.equal-height-cards .card-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.equal-height-cards .card-content > *:last-child {
-  margin-top: auto;
-}
-
-/* Accessibility Settings */
 .reduce-blur * {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  background-opacity: 1 !important;
 }
 
-.reduce-blur .backdrop-blur-md,
-.reduce-blur .backdrop-blur-lg,
-.reduce-blur .backdrop-blur-xl {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* Make backgrounds more opaque when blur is reduced for readability */
 .reduce-blur .bg-slate-900\/70,
 .reduce-blur .bg-slate-900\/90,
 .reduce-blur .bg-slate-900\/95 {

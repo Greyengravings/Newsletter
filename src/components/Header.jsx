@@ -1,5 +1,4 @@
 // src/components/Header.jsx (Updated SVG attributes for React)
-
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -7,6 +6,7 @@ import AnimatedTitle from './AnimatedTitle';
 import { ThemeContext } from '../context/ThemeContext'; // import theme context
 import axios from 'axios';
 import DefaultProfileImg from '/DefaultProfileImg.jpeg';
+import { Switch, SwitchGroup } from "@heroui/react";
 
 // Helper to style NavLinks with theme-aware colors
 const NavItem = ({ to, children, onClick, theme }) => {
@@ -287,67 +287,66 @@ function Header() {
 
             <div className="space-y-4">
               {/* Theme Toggle */}
-              <div className="flex items-center justify-between group">
-                <span className="text-sm font-medium opacity-80 group-hover:opacity-100 transition-opacity">Dark Mode</span>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={theme === 'dark'}
-                    onChange={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-                  />
-                  <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:bg-blue-600 transition-colors"></div>
-                  <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform peer-checked:translate-x-5"></div>
-                </label>
-              </div>
+              <Switch
+                isSelected={theme === 'dark'}
+                onChange={(isSelected) => setTheme(isSelected ? 'dark' : 'light')}
+                className="w-full"
+              >
+                <Switch.Content className="flex items-center justify-between w-full min-w-[240px] cursor-pointer outline-none">
+                  <span className="text-sm font-medium opacity-80">Dark Mode</span>
+                  <Switch.Control>
+                    <Switch.Thumb />
+                  </Switch.Control>
+                </Switch.Content>
+              </Switch>
 
               {/* Reduce Blur */}
-              <div className="flex items-center justify-between group">
-                <span className="text-sm font-medium opacity-80 group-hover:opacity-100 transition-opacity">Reduce Transparency</span>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={reduceBlur}
-                    onChange={() => setReduceBlur(!reduceBlur)}
-                  />
-                  <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:bg-blue-600 transition-colors"></div>
-                  <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform peer-checked:translate-x-5"></div>
-                </label>
-              </div>
+              <Switch
+                isSelected={reduceBlur}
+                onChange={setReduceBlur}
+                className="w-full"
+              >
+                <Switch.Content className="flex items-center justify-between w-full min-w-[240px] cursor-pointer outline-none">
+                  <span className="text-sm font-medium opacity-80">Reduce Blur</span>
+                  <Switch.Control>
+                    <Switch.Thumb />
+                  </Switch.Control>
+                </Switch.Content>
+              </Switch>
 
               {/* Reduce Animations */}
-              <div className="flex items-center justify-between group">
-                <span className="text-sm font-medium opacity-80 group-hover:opacity-100 transition-opacity">Reduce Animations</span>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={reduceAnimations}
-                    onChange={() => setReduceAnimations(!reduceAnimations)}
-                  />
-                  <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:bg-blue-600 transition-colors"></div>
-                  <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform peer-checked:translate-x-5"></div>
-                </label>
-              </div>
+              <Switch
+                isSelected={reduceAnimations}
+                onChange={setReduceAnimations}
+                className="w-full"
+              >
+                <Switch.Content className="flex items-center justify-between w-full min-w-[240px] cursor-pointer outline-none">
+                  <span className="text-sm font-medium opacity-80">Reduce Animations</span>
+                  <Switch.Control>
+                    <Switch.Thumb />
+                  </Switch.Control>
+                </Switch.Content>
+              </Switch>
+            </div>
 
               {/* User Settings Link */}
               <div className="pt-4 mt-2 border-t border-gray-200 dark:border-gray-700">
                 <NavLink
-                  to={isLoggedIn ? "/user-profile" : "/login"}
+                  to={isLoggedIn ? (role === 'admin' ? '/admin-dashboard' : '/user-profile') : "/login"}
                   onClick={closeMenu}
                   className={`flex items-center justify-between p-2 rounded-xl transition-colors ${
                     theme === 'dark' ? 'hover:bg-white/5' : 'hover:bg-black/5'
                   }`}
                 >
-                  <span className="text-sm font-bold">User Settings</span>
+                  <span className="text-sm font-bold">
+                    {isLoggedIn && role === 'admin' ? 'Admin Dashboard' : 'User Settings'}
+                  </span>
                   <svg className="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </NavLink>
               </div>
             </div>
-          </div>
         )}
 
         {/* "More" Menu Pop-up - Visible between 760px and 1200px */}
@@ -376,20 +375,20 @@ function Header() {
               </NavLink>
 
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                <label className="relative inline-flex items-center cursor-pointer w-full">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={theme === 'dark'}
-                    onChange={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-                  />
-                  <div className="w-12 h-6 bg-gray-300 dark:bg-gray-700 rounded-full peer peer-checked:bg-blue-600 transition-colors"></div>
-                  <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full
-                      transition-transform transform peer-checked:translate-x-6"></div>
-                  <span className="ml-3 text-sm font-medium">
-                    {theme === 'light' ? 'Light' : 'Dark'}
-                  </span>
-                </label>
+                <Switch
+                  isSelected={theme === 'dark'}
+                  onChange={(isSelected) => setTheme(isSelected ? 'dark' : 'light')}
+                  className="w-full"
+                >
+                  <Switch.Content className="flex items-center justify-between w-full min-w-[160px] cursor-pointer outline-none">
+                    <span className="text-sm font-medium">
+                      {theme === 'light' ? 'Light' : 'Dark'}
+                    </span>
+                    <Switch.Control>
+                      <Switch.Thumb />
+                    </Switch.Control>
+                  </Switch.Content>
+                </Switch>
               </div>
             </div>
           </div>
@@ -442,49 +441,46 @@ function Header() {
               {/* Theme & Accessibility Toggles in Mobile Menu */}
               <div className="w-full pt-4 border-t border-blue-200/30 dark:border-white/10 space-y-4">
                 {/* Dark Mode */}
-                <div className="flex items-center justify-between px-2">
-                  <span className="text-sm font-medium">Dark Mode</span>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="sr-only peer"
-                      checked={theme === 'dark'}
-                      onChange={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-                    />
-                    <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 rounded-full peer peer-checked:bg-blue-600 transition-colors"></div>
-                    <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform peer-checked:translate-x-5"></div>
-                  </label>
-                </div>
+                <Switch
+                  isSelected={theme === 'dark'}
+                  onChange={(isSelected) => setTheme(isSelected ? 'dark' : 'light')}
+                  className="w-full"
+                >
+                  <Switch.Content className="flex items-center justify-between w-full px-2 cursor-pointer outline-none">
+                    <span className="text-sm font-medium">Dark Mode</span>
+                    <Switch.Control>
+                      <Switch.Thumb />
+                    </Switch.Control>
+                  </Switch.Content>
+                </Switch>
 
                 {/* Reduce Blur */}
-                <div className="flex items-center justify-between px-2">
-                  <span className="text-sm font-medium">Reduce Transparency</span>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="sr-only peer"
-                      checked={reduceBlur}
-                      onChange={() => setReduceBlur(!reduceBlur)}
-                    />
-                    <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 rounded-full peer peer-checked:bg-blue-600 transition-colors"></div>
-                    <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform peer-checked:translate-x-5"></div>
-                  </label>
-                </div>
+                <Switch
+                  isSelected={reduceBlur}
+                  onChange={setReduceBlur}
+                  className="w-full"
+                >
+                  <Switch.Content className="flex items-center justify-between w-full px-2 cursor-pointer outline-none">
+                    <span className="text-sm font-medium">Reduce Transparency</span>
+                    <Switch.Control>
+                      <Switch.Thumb />
+                    </Switch.Control>
+                  </Switch.Content>
+                </Switch>
 
                 {/* Reduce Animations */}
-                <div className="flex items-center justify-between px-2">
-                  <span className="text-sm font-medium">Reduce Animations</span>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="sr-only peer"
-                      checked={reduceAnimations}
-                      onChange={() => setReduceAnimations(!reduceAnimations)}
-                    />
-                    <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 rounded-full peer peer-checked:bg-blue-600 transition-colors"></div>
-                    <div className="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform transform peer-checked:translate-x-5"></div>
-                  </label>
-                </div>
+                <Switch
+                  isSelected={reduceAnimations}
+                  onChange={setReduceAnimations}
+                  className="w-full"
+                >
+                  <Switch.Content className="flex items-center justify-between w-full px-2 cursor-pointer outline-none">
+                    <span className="text-sm font-medium">Reduce Animations</span>
+                    <Switch.Control>
+                      <Switch.Thumb />
+                    </Switch.Control>
+                  </Switch.Content>
+                </Switch>
               </div>
             </div>
           </nav>

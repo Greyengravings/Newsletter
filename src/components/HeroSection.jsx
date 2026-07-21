@@ -1,107 +1,164 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { ThemeContext } from '../context/ThemeContext';
+import { motion } from 'framer-motion';
 
 function HeroSection({ posts }) {
-  // Use the first 4 posts from the database for the hero
-  const heroPosts = posts.slice(0, 4).map(post => ({
+  const { theme, reduceAnimations } = useContext(ThemeContext);
+  const [index, setIndex] = useState(0);
+  const [itemsPerView, setItemsPerView] = useState(1);
+
+  // Update itemsPerView based on window width to match the grid layout logic
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) setItemsPerView(4);
+      else if (window.innerWidth >= 640) setItemsPerView(2);
+      else setItemsPerView(1);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Sort by combined views and likes, take top 8
+  const sortedPosts = [...posts].sort((a, b) => {
+    const scoreA = (a.views || 0) + (a.likes || 0);
+    const scoreB = (b.views || 0) + (b.likes || 0);
+    return scoreB - scoreA;
+  }).slice(0, 8);
+
+  const heroPosts = sortedPosts.map(post => ({
     id: post._id || post.id,
-    category: post.category || 'RECENT POST',
+    category: post.category || 'TRENDING',
     title: post.title,
-    imageUrl: post.imageUrl || '/images.jpeg', // fallback image
+    imageUrl: post.imageUrl || '/images.jpeg',
+    views: post.views || 0,
+    likes: post.likes || 0
   }));
+
+  // Auto-scroll logic for carousel
+  useEffect(() => {
+    if (reduceAnimations || heroPosts.length === 0) return;
+
+    const interval = setInterval(() => {
+      setIndex((prev) => {
+        const maxIndex = heroPosts.length - itemsPerView;
+        return prev >= maxIndex ? 0 : prev + 1;
+      });
+    }, 4000); // 4 seconds interval with a "slight pause" (transition is 0.8s)
+
+    return () => clearInterval(interval);
+  }, [reduceAnimations, heroPosts.length, itemsPerView]);
+
+  // Adjust index if window resizes and current index is out of bounds
+  useEffect(() => {
+    const maxIndex = Math.max(0, heroPosts.length - itemsPerView);
+    if (index > maxIndex) {
+      setIndex(maxIndex);
+    }
+  }, [itemsPerView, heroPosts.length, index]);
 
   if (heroPosts.length === 0) return null;
 
-  const buttonStyles = "inline-block border-2 border-blue-600 text-white bg-blue-600/50 backdrop-blur-sm px-4 py-1.5 rounded-lg hover:bg-blue-600 hover:text-white transition-all duration-300 font-semibold text-sm";
+  const formatNumber = (num) => {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'k';
+    }
+    return num;
+  };
+
+  const Card = ({ post }) => (
+    <Link
+      to={`/post/${post.id}`}
+      className="group relative overflow-hidden rounded-[2.5rem] shadow-xl border-2 border-gray-200 dark:border-gray-800 aspect-[4/5] flex flex-col justify-end transition-all duration-500 hover:border-blue-500/50 w-full"
+    >
+      <img
+        src={post.imageUrl}
+        alt={post.title}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+
+      <div className="relative z-10 p-6">
+        <span className="inline-block px-4 py-1.5 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest mb-4">
+          {post.category}
+        </span>
+        <h3 className="text-xl md:text-2xl font-black text-white mb-4 line-clamp-2 leading-tight tracking-tight group-hover:text-blue-400 transition-colors">
+          {post.title}
+        </h3>
+
+        <div className="flex items-center gap-4 text-[11px] font-black uppercase tracking-widest text-white/70">
+          <div className="flex items-center gap-1.5">
+            <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            <span>{formatNumber(post.views)}</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            </svg>
+            <span>{formatNumber(post.likes)}</span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-0 md:px-4 mb-12">
-      <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-4">
-        
-        {/* Post 1 - Large (2x2) */}
-        {heroPosts[0] && (
-          <div className="col-span-2 row-span-2 md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-3xl shadow-lg border border-gray-200 dark:border-gray-800">
-            <img
-              src={heroPosts[0].imageUrl}
-              alt={heroPosts[0].title}
-              className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-            <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-              <span className="text-[10px] md:text-xs font-bold tracking-widest uppercase text-blue-400 mb-2">{heroPosts[0].category}</span>
-              <h2 className="text-xl md:text-3xl lg:text-4xl font-black text-white mb-4 line-clamp-2 leading-tight">
-                {heroPosts[0].title}
-              </h2>
-              <div>
-                <Link to={`/post/${heroPosts[0].id}`} className={buttonStyles}>
-                  Read Blog
-                </Link>
+    <div className="w-full mb-12">
+      {reduceAnimations ? (
+        // Static Grid View (matches the layout exactly when animations are off)
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {heroPosts.map((post) => (
+            <Card key={post.id} post={post} />
+          ))}
+        </div>
+      ) : (
+        // Rolling Carousel View
+        <div className="relative overflow-hidden -mx-3 px-3">
+          <motion.div
+            className="flex"
+            animate={{ x: `-${(index * 100) / itemsPerView}%` }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+          >
+            {heroPosts.map((post) => (
+              <div
+                key={post.id}
+                className="px-3 flex-shrink-0"
+                style={{ width: `${100 / itemsPerView}%` }}
+              >
+                <Card post={post} />
               </div>
-            </div>
-          </div>
-        )}
+            ))}
+          </motion.div>
 
-        {/* Post 2 - Wide (2x1) */}
-        {heroPosts[1] && (
-          <div className="col-span-2 row-span-1 md:col-span-2 md:row-span-1 relative group overflow-hidden rounded-3xl shadow-lg border border-gray-200 dark:border-gray-800">
-            <img
-              src={heroPosts[1].imageUrl}
-              alt={heroPosts[1].title}
-              className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              style={{ aspectRatio: '8/3' }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-            <div className="absolute inset-0 flex flex-col justify-end p-5 md:p-6">
-              <span className="text-[10px] md:text-xs font-bold tracking-widest uppercase text-blue-400 mb-1">{heroPosts[1].category}</span>
-              <h3 className="text-base md:text-xl font-bold text-white mb-3 line-clamp-1">{heroPosts[1].title}</h3>
-              <div>
-                <Link to={`/post/${heroPosts[1].id}`} className={buttonStyles}>
-                  Read Blog
-                </Link>
+          {/* Progress Indicators */}
+          <div className="flex justify-center items-center gap-2 mt-10">
+            {Array.from({ length: Math.max(0, heroPosts.length - itemsPerView + 1) }).map((_, i) => (
+              <div
+                key={i}
+                className={`h-1.5 rounded-full overflow-hidden transition-all duration-500 ${
+                  i === index
+                    ? 'w-10 bg-gray-200 dark:bg-gray-800'
+                    : 'w-1.5 bg-gray-300 dark:bg-gray-700 opacity-50'
+                }`}
+              >
+                {i === index && (
+                  <motion.div
+                    key={`progress-${index}`}
+                    initial={{ width: "0%" }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 4, ease: "linear" }}
+                    className="h-full bg-blue-600"
+                  />
+                )}
               </div>
-            </div>
+            ))}
           </div>
-        )}
-
-        {/* Post 3 - Standard (1x1) */}
-        {heroPosts[2] && (
-          <div className="md:col-span-1 md:row-span-1 relative group overflow-hidden rounded-3xl shadow-lg border border-gray-200 dark:border-gray-800">
-            <img
-              src={heroPosts[2].imageUrl}
-              alt={heroPosts[2].title}
-              className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-            <div className="absolute inset-0 flex flex-col justify-end p-4">
-              <span className="text-[10px] font-bold tracking-widest uppercase text-blue-400 mb-1">{heroPosts[2].category}</span>
-              <h3 className="text-sm md:text-base font-bold text-white mb-2 line-clamp-2">{heroPosts[2].title}</h3>
-              <Link to={`/post/${heroPosts[2].id}`} className="text-xs font-bold text-blue-400 hover:text-white transition-colors">
-                Read More →
-              </Link>
-            </div>
-          </div>
-        )}
-
-        {/* Post 4 - Standard (1x1) */}
-        {heroPosts[3] && (
-          <div className="md:col-span-1 md:row-span-1 relative group overflow-hidden rounded-3xl shadow-lg border border-gray-200 dark:border-gray-800">
-            <img
-              src={heroPosts[3].imageUrl}
-              alt={heroPosts[3].title}
-              className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-            <div className="absolute inset-0 flex flex-col justify-end p-4">
-              <span className="text-[10px] font-bold tracking-widest uppercase text-blue-400 mb-1">{heroPosts[3].category}</span>
-              <h3 className="text-sm md:text-base font-bold text-white mb-2 line-clamp-2">{heroPosts[3].title}</h3>
-              <Link to={`/post/${heroPosts[3].id}`} className="text-xs font-bold text-blue-400 hover:text-white transition-colors">
-                Read More →
-              </Link>
-            </div>
-          </div>
-        )}
-
-      </div>
+        </div>
+      )}
     </div>
   );
 }

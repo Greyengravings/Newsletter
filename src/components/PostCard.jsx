@@ -56,6 +56,13 @@ function PostCard({ post }) {
     navigate(`/post/${post._id}`);
   };
 
+  const formatNumber = (num) => {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'k';
+    }
+    return num;
+  };
+
   return (
     <div className="block">
       <div className={`rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 ease-in-out group border ${
@@ -132,10 +139,22 @@ function PostCard({ post }) {
             <div className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-semibold transition-colors duration-300 cursor-pointer" onClick={handleReadMore}>
               Read More &rarr;
             </div>
-            <div className={`text-sm ${
+            <div className={`flex items-center gap-4 text-xs font-bold ${
               theme === 'dark' ? 'text-gray-300' : 'text-gray-500'
             }`}>
-              {post.views || 0} views
+              <div className="flex items-center gap-1">
+                <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span>{formatNumber(post.views || 0)}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+                <span>{formatNumber(post.likes || 0)}</span>
+              </div>
             </div>
           </div>
         </div>
