@@ -160,7 +160,6 @@ function Header() {
             {/* Middle Navigation - Desktop */}
             <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 space-x-10 items-center">
               <NavItem to="/" theme={theme}>Home</NavItem>
-              <NavItem to="/about" theme={theme}>About</NavItem>
               <NavItem to="/categories" theme={theme}>Categories</NavItem>
               {windowWidth > 1200 && <NavItem to="/contact" theme={theme}>Contact</NavItem>}
             </nav>
@@ -374,7 +373,7 @@ function Header() {
                 Subscribe
               </NavLink>
 
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
                 <Switch
                   isSelected={theme === 'dark'}
                   onChange={(isSelected) => setTheme(isSelected ? 'dark' : 'light')}
@@ -384,6 +383,34 @@ function Header() {
                     <span className="text-sm font-medium">
                       {theme === 'light' ? 'Light' : 'Dark'}
                     </span>
+                    <Switch.Control>
+                      <Switch.Thumb />
+                    </Switch.Control>
+                  </Switch.Content>
+                </Switch>
+
+                {/* Reduce Blur */}
+                <Switch
+                  isSelected={reduceBlur}
+                  onChange={setReduceBlur}
+                  className="w-full"
+                >
+                  <Switch.Content className="flex items-center justify-between w-full min-w-[160px] cursor-pointer outline-none">
+                    <span className="text-sm font-medium">Reduce Blur</span>
+                    <Switch.Control>
+                      <Switch.Thumb />
+                    </Switch.Control>
+                  </Switch.Content>
+                </Switch>
+
+                {/* Reduce Animations */}
+                <Switch
+                  isSelected={reduceAnimations}
+                  onChange={setReduceAnimations}
+                  className="w-full"
+                >
+                  <Switch.Content className="flex items-center justify-between w-full min-w-[160px] cursor-pointer outline-none">
+                    <span className="text-sm font-medium">Reduce Animations</span>
                     <Switch.Control>
                       <Switch.Thumb />
                     </Switch.Control>
@@ -405,7 +432,6 @@ function Header() {
           >
             <div className="flex flex-col items-center space-y-4">
               <NavItem to="/" onClick={closeMenu} theme={theme}>Home</NavItem>
-              <NavItem to="/about" onClick={closeMenu} theme={theme}>About</NavItem>
               <NavItem to="/categories" onClick={closeMenu} theme={theme}>Categories</NavItem>
               <NavItem to="/contact" onClick={closeMenu} theme={theme}>Contact</NavItem>
               {isLoggedIn ? (
@@ -461,7 +487,7 @@ function Header() {
                   className="w-full"
                 >
                   <Switch.Content className="flex items-center justify-between w-full px-2 cursor-pointer outline-none">
-                    <span className="text-sm font-medium">Reduce Transparency</span>
+                    <span className="text-sm font-medium">Reduce Blur</span>
                     <Switch.Control>
                       <Switch.Thumb />
                     </Switch.Control>

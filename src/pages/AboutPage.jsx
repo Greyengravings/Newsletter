@@ -1,18 +1,31 @@
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../context/ThemeContext';
 import ProfileImg from '/ProfileImg.jpeg';
 
 function AboutPage() {
   const { theme } = useContext(ThemeContext);
+  const navigate = useNavigate();
 
   return (
     <div
-      className={`py-8 md:p-8 rounded-lg transition-colors duration-500 ${
+      className={`py-12 md:p-12 rounded-lg transition-colors duration-500 relative ${
         theme === 'dark' ? 'text-white' : 'text-gray-900'
       }`}
     >
-      <h1 className="text-2xl md:text-3xl font-extrabold mb-6 text-center">
-        About This Blog
+      {/* Floating Home Button */}
+      <button
+        onClick={() => navigate('/')}
+        className={`fixed top-6 left-6 z-50 flex items-center gap-2 px-6 py-3 rounded-full transition-all font-black uppercase text-xs tracking-widest shadow-xl group border bg-red-600 border-red-500 text-white hover:bg-red-700 backdrop-blur-md`}
+      >
+        <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Home
+      </button>
+
+      <h1 className="text-3xl md:text-5xl font-extrabold mb-10 text-center tracking-tight">
+        About This Project
       </h1>
 
       {/* ... previous content ... */}
@@ -160,7 +173,7 @@ function AboutPage() {
       </section>
 
       {/* Creator & Portfolio Section - Responsive Row */}
-      <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row gap-8 items-start">
+      <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row gap-4 items-start">
 
         {/* Developer Portfolio Section (WhatsApp Style) - NOW ON LEFT */}
         <section id="portfolio" className="flex-1 flex justify-center md:justify-start order-2 md:order-1">

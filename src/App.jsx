@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { ThemeProvider, ThemeContext } from './context/ThemeContext';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './features/auth/authSlice';
 import useIdleTimeout from './hooks/useIdleTimeout';
@@ -20,11 +20,12 @@ import UserProfilePage from './pages/UserProfilePage';
 import DataPrivacyPage from './pages/DataPrivacyPage';
 import TermsOfUsePage from './pages/TermsOfUsePage';
 
-// Separate component to use ThemeContext
+// Separate component to use ThemeContext and useLocation
 function AppContent() {
   const { theme, reduceBlur, reduceAnimations } = useContext(ThemeContext);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const location = useLocation();
 
   useIdleTimeout(isLoggedIn, () => dispatch(logout()));
 
@@ -58,48 +59,54 @@ function AppContent() {
     document.documentElement.style.setProperty('--doodle-url', `url("${doodleUrl}")`);
   }, [theme, reduceBlur, reduceAnimations]);
 
+  const isLoginPage = location.pathname === '/login';
+  const isAboutPage = location.pathname === '/about';
+  const isSubscribePage = location.pathname === '/subscribe';
+  const hideHeaderFooter = isLoginPage || isAboutPage;
+  const hideHeaderOnly = isSubscribePage;
+
   return (
-      <Router basename={import.meta.env.MODE === 'production' ? '/Newsletter' : '/'}>
+    <div
+      className={`min-h-screen flex flex-col w-full ${
+        theme === 'dark' ? 'text-white' : 'text-black-900'
+      }`}
+    >
       <ScrollToTop />
-      <div
-        className={`min-h-screen flex flex-col w-full ${
-          theme === 'dark' ? 'text-white' : 'text-black-900'
-        }`}
-      >
-        <Header />
+      {!hideHeaderFooter && !hideHeaderOnly && <Header />}
 
-        {/* Main content area - added mt-24 to ensure it starts below the fixed floating header */}
-        <main className="w-full flex-grow p-0 md:p-6 mt-24">
-          {/* Inner constrained content area - matching header width */}
-          <div className="w-[95%] md:w-full md:max-w-[90%] mx-auto">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/post/:postId" element={<PostPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/explore" element={<ExplorePage />} />
-              <Route path="/categories" element={<CategoriesPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/subscribe" element={<SubscribePage />} />
-              <Route path="/login" element={<CombinedLoginPage />} />
-              <Route path="/admin-dashboard" element={<AdminDashboard />} />
-              <Route path="/user-profile" element={<UserProfilePage />} />
-              <Route path="/privacy" element={<DataPrivacyPage />} />
-              <Route path="/terms" element={<TermsOfUsePage />} />
-            </Routes>
-          </div>
-        </main>
+      {/* Main content area - added mt-24 to ensure it starts below the fixed floating header */}
+      <main className={`w-full flex-grow p-0 md:p-6 ${(hideHeaderFooter || hideHeaderOnly) ? 'mt-0' : 'mt-24'}`}>
+        {/* Inner constrained content area - matching header width */}
+        <div className="w-[95%] md:w-full md:max-w-[90%] mx-auto">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/post/:postId" element={<PostPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/explore" element={<ExplorePage />} />
+            <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/subscribe" element={<SubscribePage />} />
+            <Route path="/login" element={<CombinedLoginPage />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/user-profile" element={<UserProfilePage />} />
+            <Route path="/privacy" element={<DataPrivacyPage />} />
+            <Route path="/terms" element={<TermsOfUsePage />} />
+          </Routes>
+        </div>
+      </main>
 
-        <Footer />
-      </div>
-    </Router>
+      {!hideHeaderFooter && <Footer />}
+    </div>
   );
 }
 
-// App now only provides ThemeContext
+// App now only provides ThemeContext and Router
 function App() {
   return (
     <ThemeProvider>
-      <AppContent />
+      <Router basename={import.meta.env.MODE === 'production' ? '/Newsletter' : '/'}>
+        <AppContent />
+      </Router>
     </ThemeProvider>
   );
 }

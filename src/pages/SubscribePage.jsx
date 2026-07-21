@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../context/ThemeContext';
 import SubscriptionSuccessModal from '../components/SubscriptionSuccessModal';
 
 function SubscribePage() {
   const { theme } = useContext(ThemeContext);
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subscribedEmail, setSubscribedEmail] = useState('');
@@ -43,9 +45,20 @@ function SubscribePage() {
   ];
 
   return (
-    <div className={`py-8 md:p-8 min-h-screen transition-colors duration-500 ${
+    <div className={`py-12 md:p-8 min-h-screen transition-colors duration-500 relative ${
       theme === 'dark' ? 'text-white' : 'text-gray-900'
     }`}>
+      {/* Floating Home Button */}
+      <button
+        onClick={() => navigate('/')}
+        className={`fixed top-6 left-6 z-50 flex items-center gap-2 px-6 py-3 rounded-full transition-all font-black uppercase text-xs tracking-widest shadow-xl group border bg-red-600 border-red-500 text-white hover:bg-red-700 backdrop-blur-md`}
+      >
+        <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Home
+      </button>
+
       <div className="max-w-4xl mx-auto text-center mt-12">
         <div className={`inline-block p-4 rounded-full mb-6 ${
           theme === 'dark' ? 'bg-blue-900/30 text-blue-400' : 'bg-blue-100 text-blue-600'

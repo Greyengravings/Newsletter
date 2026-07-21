@@ -134,7 +134,22 @@ function CombinedLoginPage() {
   }`;
 
   return (
-    <div className={`flex items-center justify-center min-h-[calc(100vh-160px)] py-6 transition-colors duration-500`}>
+    <div className={`flex items-center justify-center min-h-screen py-6 transition-colors duration-500 relative`}>
+      {/* Floating Home Button */}
+      <button
+        onClick={() => navigate('/')}
+        className={`fixed top-6 left-6 z-50 flex items-center gap-2 px-6 py-3 rounded-full transition-all font-black uppercase text-xs tracking-widest shadow-xl group border ${
+          theme === 'dark'
+            ? 'bg-red-600 border-red-500 text-white hover:bg-red-700'
+            : 'bg-red-600 border-red-500 text-white hover:bg-red-700'
+        } backdrop-blur-md`}
+      >
+        <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Home
+      </button>
+
       <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
         {/* Left Column: Email Login/Signup */}
@@ -268,19 +283,18 @@ function CombinedLoginPage() {
                 required
               />
             </div>
-            {role === 'admin' && (
-              <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
-                <label className="block text-sm font-bold px-1">Your Admin Key</label>
-                <input
-                  type="password"
-                  className={inputClasses}
-                  value={specialId}
-                  onChange={(e) => setSpecialId(e.target.value)}
-                  placeholder="Enter authorized key"
-                  required={role === 'admin'}
-                />
-              </div>
-            )}
+            <div className={`space-y-2 transition-all duration-500 ${role === 'admin' ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}`}>
+              <label className="block text-sm font-bold px-1">Your Admin Key</label>
+              <input
+                type="password"
+                className={inputClasses}
+                value={specialId}
+                onChange={(e) => setSpecialId(e.target.value)}
+                placeholder="Enter authorized key"
+                required={role === 'admin'}
+                tabIndex={role === 'admin' ? 0 : -1}
+              />
+            </div>
             <div className="pt-4">
               <button
                 type="submit"
