@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function ContactPage() {
   const { theme } = useContext(ThemeContext);
@@ -11,14 +12,15 @@ function ContactPage() {
     subject: '',
     message: ''
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Thank you for reaching out! We will get back to you soon.');
+    setIsModalOpen(true);
     setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
   };
 
-  const inputClasses = `w-full p-3 rounded-xl border focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
+  const inputClasses = `w-full p-3 rounded-2xl border focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
     theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400'
   }`;
 
@@ -41,7 +43,7 @@ function ContactPage() {
             </header>
 
             {/* Form Card */}
-            <div className={`p-6 md:p-10 rounded-xl shadow-2xl transition-all duration-300 ${
+            <div className={`p-6 md:p-10 rounded-[2.5rem] shadow-2xl transition-all duration-300 ${
               theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-blue-50'
             }`}>
               <form onSubmit={handleSubmit} className="space-y-8">
@@ -114,7 +116,7 @@ function ContactPage() {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 transition-all duration-300 transform hover:scale-[1.01] active:scale-[0.99]"
+                    className="w-full py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 transition-all duration-300 transform hover:scale-[1.01] active:scale-[0.99]"
                   >
                     Send Message
                   </button>
@@ -141,6 +143,57 @@ function ContactPage() {
 
         </div>
       </div>
+
+      {/* Success Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsModalOpen(false)}
+              className="absolute inset-0"
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className={`relative w-full max-w-md p-8 md:p-10 rounded-[2.5rem] shadow-2xl overflow-hidden ${
+                theme === 'dark' ? 'bg-gray-800 border border-gray-700 text-white' : 'bg-white border border-blue-50 text-gray-900'
+              }`}
+            >
+              {/* Confetti-like decorative elements matching SubscriptionSuccessModal */}
+              <div className="absolute -top-6 -left-6 w-24 h-24 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+              <div className="text-center relative z-10">
+                <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${
+                  theme === 'dark' ? 'bg-blue-900/30 text-blue-400' : 'bg-blue-50 text-blue-600'
+                }`}>
+                  <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+
+                <h3 className="text-3xl font-black mb-4 tracking-tight">Message Sent!</h3>
+                <p className="text-lg opacity-80 mb-8 leading-relaxed">
+                  Thank you for reaching out to us, we will try and respond as soon as possible, meanwhile we wish you have a great day, enjoy learning and acknowledgments to topics.
+                </p>
+
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className={`w-full py-4 font-black text-lg transition-all active:scale-95 ${
+                    theme === 'dark' ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'
+                  }`}
+                >
+                  Yup, Thanks!
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
