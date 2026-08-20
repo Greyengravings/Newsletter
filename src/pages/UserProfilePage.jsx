@@ -93,7 +93,17 @@ function UserProfilePage() {
             </svg>
           </div>
           <h2 className="text-xl font-black mb-2">{error}</h2>
-          <button onClick={() => window.location.reload()} className="text-sm font-bold underline opacity-60 hover:opacity-100">Try Again</button>
+          <div className="flex flex-col gap-2">
+            <button onClick={() => window.location.reload()} className="text-sm font-bold underline opacity-60 hover:opacity-100">
+              Try Again
+            </button>
+            <button
+              onClick={handleLogout}
+              className="mt-4 px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl transition-all shadow-lg active:scale-95"
+            >
+              Login Again
+            </button>
+          </div>
         </div>
       </div>
     );
