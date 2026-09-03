@@ -104,7 +104,7 @@ The frontend is configured for deployment to **GitHub Pages**, while the backend
 
 ```text
 ┌─────────────────────────────────────────────────────────┐
-│                    React Frontend                        │
+│                    React Frontend                       │
 │                                                         │
 │  React 19 + Vite + Tailwind CSS + HeroUI                │
 │  React Router + Redux Toolkit + Axios + Framer Motion   │
@@ -114,7 +114,7 @@ The frontend is configured for deployment to **GitHub Pages**, while the backend
                            │ HTTP / REST
                            ▼
 ┌─────────────────────────────────────────────────────────┐
-│                    Express Backend                       │
+│                    Express Backend                      │
 │                                                         │
 │  Node.js + Express 5 + JWT + bcrypt + Multer            │
 │                                                         │
@@ -123,7 +123,7 @@ The frontend is configured for deployment to **GitHub Pages**, while the backend
                            │ Mongoose
                            ▼
 ┌─────────────────────────────────────────────────────────┐
-│                     MongoDB Atlas                        │
+│                     MongoDB Atlas                       │
 │                                                         │
 │  Users · Admin Users · Blogs                            │
 └─────────────────────────────────────────────────────────┘
