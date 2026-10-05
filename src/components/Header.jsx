@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import AnimatedTitle from './AnimatedTitle';
 import { ThemeContext } from '../context/ThemeContext'; // import theme context
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 import DefaultProfileImg from '/DefaultProfileImg.jpeg';
 import { Switch, SwitchGroup } from "@heroui/react";
 
@@ -106,9 +107,8 @@ function Header() {
     if (isLoggedIn && username) {
       const fetchProfile = async () => {
         try {
-          const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
           if (role === 'admin') {
-            const response = await axios.get(`${apiUrl}/admin/profile/${encodeURIComponent(username)}`);
+            const response = await axios.get(`${API_BASE_URL}/admin/profile/${encodeURIComponent(username)}`);
             if (response.data && response.data.profile) {
               setProfile({
                 displayName: response.data.profile.displayName || username,
@@ -117,7 +117,7 @@ function Header() {
             }
           } else {
             const token = localStorage.getItem('token');
-            const response = await axios.get(`${apiUrl}/user/profile`, {
+            const response = await axios.get(`${API_BASE_URL}/user/profile`, {
               headers: { Authorization: `Bearer ${token}` },
             });
             setProfile({

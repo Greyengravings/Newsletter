@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../features/auth/authSlice';
 import { ThemeContext } from '../context/ThemeContext';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 import DefaultProfileImg from '/DefaultProfileImg.jpeg';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -28,7 +29,7 @@ function UserProfilePage() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/user/profile`, {
+        const response = await axios.get(`${API_BASE_URL}/user/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setProfile({

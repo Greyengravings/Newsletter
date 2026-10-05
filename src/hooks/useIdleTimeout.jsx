@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 
 export default function useIdleTimeout(isLoggedIn, logout) {
   const timeoutRef = useRef(null);
@@ -8,8 +9,7 @@ export default function useIdleTimeout(isLoggedIn, logout) {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
-        await axios.post(`${apiUrl}/admin/logout`);
+        await axios.post(`${API_BASE_URL}/admin/logout`);
       } catch (error) {
         console.error('Logout API error:', error);
       }

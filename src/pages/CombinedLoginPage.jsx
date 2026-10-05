@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { ThemeContext } from '../context/ThemeContext';
 import { login } from '../features/auth/authSlice';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function CombinedLoginPage() {
@@ -42,8 +43,6 @@ function CombinedLoginPage() {
       return;
     }
 
-    const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
-
     try {
       if (isRegister) {
         if (!username) {
@@ -54,7 +53,7 @@ function CombinedLoginPage() {
 
         let response;
         if (role === 'user') {
-          response = await axios.post(`${apiUrl}/user/register`, {
+          response = await axios.post(`${API_BASE_URL}/user/register`, {
             username,
             email,
             password,
@@ -62,7 +61,7 @@ function CombinedLoginPage() {
           });
         } else {
           // Admin registration
-          response = await axios.post(`${apiUrl}/admin/register`, {
+          response = await axios.post(`${API_BASE_URL}/admin/register`, {
             username: email, // Backend expects email in username field for admin
             email,
             specialId,
@@ -81,7 +80,7 @@ function CombinedLoginPage() {
         // Login Logic
         let response;
         if (role === 'user') {
-          response = await axios.post(`${apiUrl}/user/login`, {
+          response = await axios.post(`${API_BASE_URL}/user/login`, {
             username: email, // Backend uses email as username in the login request
             password,
           });
@@ -101,7 +100,7 @@ function CombinedLoginPage() {
           }
         } else {
           // Admin login
-          response = await axios.post(`${apiUrl}/admin/login`, {
+          response = await axios.post(`${API_BASE_URL}/admin/login`, {
             email,
             password,
             specialId,

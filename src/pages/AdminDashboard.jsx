@@ -4,6 +4,7 @@ import { addPost, deletePost } from '../features/posts/postsSlice';
 import { logout } from '../features/auth/authSlice';
 import { ThemeContext } from '../context/ThemeContext';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 
 function AdminDashboard() {
   const posts = useSelector((state) => state.posts.posts);
@@ -58,7 +59,7 @@ function AdminDashboard() {
     if (!username) return;
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/profile/${encodeURIComponent(username)}`);
+        const response = await axios.get(`${API_BASE_URL}/admin/profile/${encodeURIComponent(username)}`);
         if (response.data && response.data.profile) {
           setProfile({
             displayName: response.data.profile.displayName || '',
@@ -84,7 +85,7 @@ function AdminDashboard() {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/users`);
+      const response = await axios.get(`${API_BASE_URL}/admin/users`);
       setUsers(response.data.users);
     } catch (error) {
       console.error('Failed to fetch users:', error);
@@ -97,7 +98,7 @@ function AdminDashboard() {
         showToast('Please fill all user fields', 'error');
         return;
       }
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/users`, newUser);
+      await axios.post(`${API_BASE_URL}/admin/users`, newUser);
       setNewUser({ username: '', email: '', password: '', role: 'user', membershipDays: 30 });
       fetchUsers();
       showToast('User created successfully!', 'success');
@@ -109,7 +110,7 @@ function AdminDashboard() {
 
   const handleUpdateMembership = async (userId, membershipDays) => {
     try {
-      await axios.put(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/users/${userId}/membership`, { membershipDays });
+      await axios.put(`${API_BASE_URL}/admin/users/${userId}/membership`, { membershipDays });
       fetchUsers();
       showToast('Membership updated', 'success');
     } catch (error) {
@@ -120,7 +121,7 @@ function AdminDashboard() {
   const handleDeleteUser = async (userId, username) => {
     if (window.confirm(`Are you sure you want to delete user "${username}"?`)) {
       try {
-        await axios.delete(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/users/${userId}`);
+        await axios.delete(`${API_BASE_URL}/admin/users/${userId}`);
         fetchUsers();
         showToast('User removed', 'success');
       } catch (error) {
@@ -148,7 +149,7 @@ function AdminDashboard() {
 
   const confirmPublish = async () => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/blogs`, {
+      const response = await axios.post(`${API_BASE_URL}/blogs`, {
         ...newPost,
         createdAt: new Date().toISOString(),
       });
@@ -171,7 +172,7 @@ function AdminDashboard() {
   const confirmDelete = async () => {
     if (confirmTitle === postToDelete.title) {
       try {
-        await axios.delete(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/blogs/${postToDelete.id}`);
+        await axios.delete(`${API_BASE_URL}/blogs/${postToDelete.id}`);
         dispatch(deletePost(postToDelete.id));
         setShowConfirmModal(false);
         setPostToDelete(null);
@@ -201,7 +202,7 @@ function AdminDashboard() {
         formData.append('profilePicture', editProfile.profilePicture);
       }
       const response = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/admin/profile/${encodeURIComponent(username)}`,
+        `${API_BASE_URL}/admin/profile/${encodeURIComponent(username)}`,
         formData,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
