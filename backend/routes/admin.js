@@ -43,14 +43,18 @@ const upload = multer({
 // Register new admin
 router.post('/register', async (req, res) => {
   const { username, email, phoneNumber, specialId, password } = req.body;
-
-  console.log('Received register data:', req.body);
+  const adminRegistrationCode = process.env.ADMIN_REGISTRATION_CODE?.trim();
 
   if (!password || password.length < 8) {
     return res.status(400).json({ message: 'Password must be at least 8 characters' });
   }
 
-  if (!specialId || specialId.toLowerCase() !== 'd15c') {
+  if (!adminRegistrationCode) {
+    console.error('ADMIN_REGISTRATION_CODE is not configured');
+    return res.status(503).json({ message: 'Admin registration is not configured' });
+  }
+
+  if (typeof specialId !== 'string' || specialId.trim().toLowerCase() !== adminRegistrationCode.toLowerCase()) {
     return res.status(400).json({ message: 'Invalid secret code for admin registration' });
   }
 
@@ -70,8 +74,6 @@ router.post('/register', async (req, res) => {
       idCode: specialId ? specialId.trim().toUpperCase() : '',
       passwordHash,
     });
-
-    console.log('Saving new admin:', newAdmin);
 
     await newAdmin.save();
     console.log('Admin saved successfully');

@@ -37,8 +37,15 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ message: 'Invalid role' });
   }
 
-  if (role === 'admin' && secretCode !== 'D15C') {
-    return res.status(400).json({ message: 'Invalid secret code for admin registration' });
+  if (role === 'admin') {
+    const adminRegistrationCode = process.env.ADMIN_REGISTRATION_CODE?.trim();
+    if (!adminRegistrationCode) {
+      console.error('ADMIN_REGISTRATION_CODE is not configured');
+      return res.status(503).json({ message: 'Admin registration is not configured' });
+    }
+    if (typeof secretCode !== 'string' || secretCode.trim().toLowerCase() !== adminRegistrationCode.toLowerCase()) {
+      return res.status(400).json({ message: 'Invalid secret code for admin registration' });
+    }
   }
 
   try {

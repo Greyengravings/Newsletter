@@ -60,18 +60,29 @@ app.use('/api/admin', adminRoutes);
 // Mount user routes
 app.use('/api/user', userRoutes);
 
-// MongoDB connection string, replace with your own or use env variable
-const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://nihalanihitesh13_db_user:LhN8E2chhBAab7Us@cluster0.swyrh.mongodb.net/blogcms?retryWrites=true&w=majority';
+const mongoURI = process.env.MONGODB_URI;
 
-mongoose.connect(mongoURI)
-  .then(() => {
-    console.log('Connected to MongoDB Atlas');
-    const PORT = process.env.PORT || 5001;
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  })
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
+async function startServer() {
+  if (!mongoURI) {
+    console.error('MONGODB_URI is required. Set it in backend/.env.');
     process.exit(1);
+  }
+
+  try {
+    await mongoose.connect(mongoURI, {
+      dbName: 'blogcms',
+      serverSelectionTimeoutMS: 10000,
+    });
+    console.log('Connected to MongoDB using MONGODB_URI.');
+  } catch (err) {
+    console.error(`Failed to connect to MongoDB: ${err.message}`);
+    process.exit(1);
+  }
+
+  const PORT = process.env.PORT || 5001;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
   });
+}
+
+startServer();
