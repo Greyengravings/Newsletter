@@ -158,10 +158,15 @@ function Header() {
             </div>
 
             {/* Middle Navigation - Desktop */}
-            <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 space-x-10 items-center">
-              <NavItem to="/" theme={theme}>Home</NavItem>
-              <NavItem to="/categories" theme={theme}>Categories</NavItem>
-              {windowWidth > 1200 && <NavItem to="/contact" theme={theme}>Contact</NavItem>}
+            <nav
+            className={`hidden md:flex items-center ${
+              windowWidth <= 1200 ? 'ml-auto mr-4 space-x-6': 'absolute left-1/2 -translate-x-1/2 space-x-10'
+              }`}>
+                <NavItem to="/" theme={theme}>Home</NavItem>
+                <NavItem to="/categories" theme={theme}>Categories</NavItem>
+                {windowWidth > 1200 && (
+                  <NavItem to="/contact" theme={theme}>Contact</NavItem>
+              )}
             </nav>
 
             {/* Right Actions - Desktop */}

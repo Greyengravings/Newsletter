@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PostCard from '../components/PostCard';
@@ -15,13 +15,14 @@ function HomePage() {
   const posts = useSelector((state) => state.posts.posts);
   const postStatus = useSelector((state) => state.posts.status);
   const postError = useSelector((state) => state.posts.error);
-  const [visiblePosts, setVisiblePosts] = useState(2);
+  const [visiblePosts, setVisiblePosts] = useState(3);
   const [showDetails, toggleDetails] = useToggle(false);
   const { theme } = useContext(ThemeContext);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [categories, setCategories] = useState([]);
+  const filterDropdownRef = useRef(null);
 
   const filter = useSelector((state) => state.posts.filter);
   const selectedCategory = useSelector((state) => state.posts.selectedCategory);
@@ -45,10 +46,16 @@ function HomePage() {
   }, [postStatus, dispatch]);
 
   useEffect(() => {
-    if (posts.length > 0) {
-      const uniqueCategories = [...new Set(posts.map(post => post.category).filter(Boolean))];
-      setCategories(uniqueCategories);
-    }
+    const defaultCategories = [
+      'Technology', 'AI & ML', 'Business & Finance', 'Coding', 'Productivity',
+      'Web Dev', 'Design', 'Digital Marketing', 'Full Stack', 'Travel & Adventure',
+      'Data Science', 'Health & Fitness', 'Cybersecurity', 'Lifestyle & Wellness',
+      'Cloud', 'Mobile Dev', 'Photography & Art', 'DevOps', 'Creative Writing',
+      'Blockchain', 'UI/UX Design', 'Game Dev', 'Open Source', 'Gadgets', 'Career & Tech', 'Others'
+    ];
+    const postCategories = posts.map(post => post.category).filter(Boolean);
+    const uniqueCategories = [...new Set([...postCategories, ...defaultCategories])];
+    setCategories(uniqueCategories);
   }, [posts]);
 
   useEffect(() => {
@@ -56,6 +63,17 @@ function HomePage() {
       dispatch(fetchBookmarkedPosts(username));
     }
   }, [isLoggedIn, username, filter, dispatch]);
+
+  // Close filter menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target)) {
+        setShowFilterDropdown(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const showMorePosts = () => setVisiblePosts(posts.length);
   const showLessPosts = () => setVisiblePosts(2);
@@ -126,20 +144,140 @@ function HomePage() {
             </div>
 
             <div className="flex gap-2">
-              <div className="relative">
+              <div className="relative" ref={filterDropdownRef}>
                 <button
+                  type="button"
                   onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-                  className={`px-4 py-3 border rounded-full transition-all duration-300 font-medium ${
+                  className={`px-4 py-3 border rounded-full transition-all duration-300 font-medium flex items-center gap-1.5 ${
                     filter !== 'all'
                       ? 'bg-blue-600 text-white border-blue-600'
                       : theme === 'dark'
                         ? 'bg-gray-700 border-gray-600 text-white hover:bg-gray-600'
                         : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-50'
                   }`}
+                  aria-expanded={showFilterDropdown}
                 >
-                  Filter
+                  <span>Filter</span>
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-200 ${showFilterDropdown ? 'rotate-180' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
                 </button>
+
+                {/* Filter Dropdown Menu - Anchored directly beside/below the filter button */}
+                {showFilterDropdown && (
+                  <div className={`absolute top-full left-0 mt-2 w-64 rounded-2xl shadow-2xl z-30 border overflow-hidden transition-all duration-200 text-left ${
+                    theme === 'dark' ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'
+                  }`}>
+                    <div className="p-2 space-y-1">
+                      <div className={`px-3 py-1.5 text-[11px] font-black uppercase tracking-wider ${
+                        theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                      }`}>
+                        Sort By
+                      </div>
+                      <button
+                        onClick={() => handleFilter('all')}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between ${
+                          filter === 'all'
+                            ? 'bg-blue-600 text-white'
+                            : theme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'
+                        }`}
+                      >
+                        <span>All Posts</span>
+                        {filter === 'all' && <span>✓</span>}
+                      </button>
+                      <button
+                        onClick={() => handleFilter('newest')}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between ${
+                          filter === 'newest'
+                            ? 'bg-blue-600 text-white'
+                            : theme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'
+                        }`}
+                      >
+                        <span>Newest First</span>
+                        {filter === 'newest' && <span>✓</span>}
+                      </button>
+                      <button
+                        onClick={() => handleFilter('oldest')}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between ${
+                          filter === 'oldest'
+                            ? 'bg-blue-600 text-white'
+                            : theme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'
+                        }`}
+                      >
+                        <span>Oldest First</span>
+                        {filter === 'oldest' && <span>✓</span>}
+                      </button>
+                      <button
+                        onClick={() => handleFilter('mostViewed')}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between ${
+                          filter === 'mostViewed'
+                            ? 'bg-blue-600 text-white'
+                            : theme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'
+                        }`}
+                      >
+                        <span>Most Viewed</span>
+                        {filter === 'mostViewed' && <span>✓</span>}
+                      </button>
+                      {isLoggedIn && (
+                        <button
+                          onClick={() => handleFilter('bookmarked')}
+                          className={`w-full text-left px-3 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center justify-between ${
+                            filter === 'bookmarked'
+                              ? 'bg-blue-600 text-white'
+                              : theme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'
+                          }`}
+                        >
+                          <span>Bookmarked</span>
+                          {filter === 'bookmarked' && <span>✓</span>}
+                        </button>
+                      )}
+
+                      <div className={`mt-2 pt-2 border-t px-3 py-1.5 text-[11px] font-black uppercase tracking-wider ${
+                        theme === 'dark' ? 'border-gray-700 text-gray-400' : 'border-gray-100 text-gray-500'
+                      }`}>
+                        Filter By Category
+                      </div>
+
+                      {/* Scrollable Categories List (showing ~5-7 items max height) */}
+                      <div className="max-h-56 overflow-y-auto space-y-1 pr-1">
+                        {categories.map((category) => (
+                          <button
+                            key={category}
+                            onClick={() => handleFilter('category', category)}
+                            className={`w-full text-left px-3 py-2 rounded-xl text-sm font-medium transition-colors flex items-center justify-between ${
+                              filter === 'category' && selectedCategory === category
+                                ? 'bg-blue-600 text-white'
+                                : theme === 'dark'
+                                  ? 'text-gray-300 hover:bg-gray-700'
+                                  : 'text-gray-700 hover:bg-gray-100'
+                            }`}
+                          >
+                            <span className="truncate">{category}</span>
+                            {filter === 'category' && selectedCategory === category && <span>✓</span>}
+                          </button>
+                        ))}
+                      </div>
+
+                      {(filter !== 'all' || searchQuery) && (
+                        <div className={`mt-2 pt-2 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-100'}`}>
+                          <button
+                            onClick={clearAllFilters}
+                            className="w-full text-left px-3 py-2 rounded-xl text-sm font-bold text-red-500 hover:bg-red-500/10 transition-colors"
+                          >
+                            Clear All Filters
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
+
               <button
                 className={`px-3 md:px-4 py-3 border rounded-full transition-all duration-300 font-medium ${
                   theme === 'dark'
@@ -163,100 +301,6 @@ function HomePage() {
                 </svg>
               </button>
             </div>
-
-            {showFilterDropdown && (
-              <div className={`absolute right-0 mt-2 w-56 rounded-lg shadow-lg z-10 ${
-                theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'
-              } border`}>
-                <div className="py-1">
-                  <button
-                    onClick={() => handleFilter('all')}
-                    className={`block w-full text-left px-4 py-2 text-sm ${
-                      filter === 'all'
-                        ? 'bg-blue-600 text-white'
-                        : theme === 'dark'
-                          ? 'text-gray-300 hover:bg-gray-700'
-                          : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    All Posts
-                  </button>
-                  <button
-                    onClick={() => handleFilter('newest')}
-                    className={`block w-full text-left px-4 py-2 text-sm ${
-                      filter === 'newest'
-                        ? 'bg-blue-600 text-white'
-                        : theme === 'dark'
-                          ? 'text-gray-300 hover:bg-gray-700'
-                          : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    Newest First
-                  </button>
-                  <button
-                    onClick={() => handleFilter('oldest')}
-                    className={`block w-full text-left px-4 py-2 text-sm ${
-                      filter === 'oldest'
-                        ? 'bg-blue-600 text-white'
-                        : theme === 'dark'
-                          ? 'text-gray-300 hover:bg-gray-700'
-                          : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    Oldest First
-                  </button>
-                  <button
-                    onClick={() => handleFilter('mostViewed')}
-                    className={`block w-full text-left px-4 py-2 text-sm ${
-                      filter === 'mostViewed'
-                        ? 'bg-blue-600 text-white'
-                        : theme === 'dark'
-                          ? 'text-gray-300 hover:bg-gray-700'
-                          : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    Most Viewed
-                  </button>
-                  {isLoggedIn && (
-                    <button
-                      onClick={() => handleFilter('bookmarked')}
-                      className={`block w-full text-left px-4 py-2 text-sm ${
-                        filter === 'bookmarked'
-                          ? 'bg-blue-600 text-white'
-                          : theme === 'dark'
-                            ? 'text-gray-300 hover:bg-gray-700'
-                            : 'text-gray-700 hover:bg-gray-50'
-                      }`}
-                    >
-                      Bookmarked
-                    </button>
-                  )}
-                  {categories.map((category) => (
-                    <button
-                      key={category}
-                      onClick={() => handleFilter('category', category)}
-                      className={`block w-full text-left px-4 py-2 text-sm ${
-                        filter === 'category' && selectedCategory === category
-                          ? 'bg-blue-600 text-white'
-                          : theme === 'dark'
-                            ? 'text-gray-300 hover:bg-gray-700'
-                            : 'text-gray-700 hover:bg-gray-50'
-                      }`}
-                    >
-                      {category}
-                    </button>
-                  ))}
-                  {(filter !== 'all' || searchQuery) && (
-                    <button
-                      onClick={clearAllFilters}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                    >
-                      Clear Filters
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
@@ -297,7 +341,7 @@ function HomePage() {
           }
 
           return (
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
+            <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
               {filteredPosts.length === 0 ? (
                 <div className="w-full col-span-2">
                   <EmptySearchResults theme={theme} />
