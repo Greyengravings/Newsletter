@@ -160,7 +160,7 @@ function HomeSidePanel() {
                   </p>
                 </div>
               ) : (
-                <Link to="/login" onClick={closePanel} className="inline-flex items-center gap-2 text-lg font-bold text-blue-600 hover:underline dark:text-blue-500">
+                <Link to="/login" onClick={closePanel} className="inline-flex items-center gap-2 text-lg font-bold text-[oklch(0.546_0.245_262.881)] hover:underline">
                   <PanelIcon name="login" className="h-5 w-5" />
                   <span>Sign in / Log in</span>
                 </Link>
@@ -194,7 +194,7 @@ function HomeSidePanel() {
           </nav>
 
           <section aria-label="Settings" className="mt-6 border-t border-current/10 pt-5">
-            <h2 className={`mb-4 flex items-center gap-2 px-1 text-lg font-bold ${isDark ? 'text-blue-300' : 'text-blue-700'}`}>
+            <h2 className="mb-4 flex items-center gap-2 px-1 text-lg font-bold text-[oklch(0.546_0.245_262.881)]">
               <svg aria-hidden="true" className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="3" />
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
