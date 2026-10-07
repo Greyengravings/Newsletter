@@ -160,7 +160,7 @@ function HomeSidePanel() {
                   </p>
                 </div>
               ) : (
-                <Link to="/login" onClick={closePanel} className="inline-flex items-center gap-2 text-lg font-bold text-blue-600 hover:underline dark:text-blue-400">
+                <Link to="/login" onClick={closePanel} className="inline-flex items-center gap-2 text-lg font-bold text-blue-600 hover:underline dark:text-blue-500">
                   <PanelIcon name="login" className="h-5 w-5" />
                   <span>Sign in / Log in</span>
                 </Link>
