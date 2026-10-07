@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './features/auth/authSlice';
 import useIdleTimeout from './hooks/useIdleTimeout';
 import Header from './components/Header';
+import HomeSidePanel from './components/HomeSidePanel';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HomePage';
@@ -72,6 +73,7 @@ function AppContent() {
       }`}
     >
       <ScrollToTop />
+      <HomeSidePanel />
       {!hideHeaderFooter && !hideHeaderOnly && <Header />}
 
       {/* Main content area - added mt-24 to ensure it starts below the fixed floating header */}

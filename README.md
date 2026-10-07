@@ -23,6 +23,16 @@
 
 ---
 
+## Backend Setup
+
+Copy `backend/.env.example` to `backend/.env`, then set `MONGODB_URI` to your MongoDB Atlas connection string and `ADMIN_REGISTRATION_CODE` to a private admin registration code. The backend connects to the `blogcms` database; regular user registrations are stored in the `users` collection. Keep `backend/.env` private; only the example file is intended to be committed.
+
+Start the API from the repository root with:
+
+```sh
+npm --prefix backend start
+```
+
 ## Overview
 
 **Newsletter** is a full-stack blog and digital publishing application built around a clean, responsive reading experience and a lightweight content-management workflow.
