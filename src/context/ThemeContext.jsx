@@ -14,10 +14,6 @@ export const ThemeProvider = ({ children }) => {
     return localStorage.getItem('reduceAnimations') === 'true';
   });
 
-  const [headerLayout, setHeaderLayout] = useState(() => {
-    return localStorage.getItem('headerLayout') || 'single';
-  });
-
   useEffect(() => {
     localStorage.setItem('theme', theme);
   }, [theme]);
@@ -30,16 +26,11 @@ export const ThemeProvider = ({ children }) => {
     localStorage.setItem('reduceAnimations', reduceAnimations);
   }, [reduceAnimations]);
 
-  useEffect(() => {
-    localStorage.setItem('headerLayout', headerLayout);
-  }, [headerLayout]);
-
   return (
     <ThemeContext.Provider value={{
       theme, setTheme,
       reduceBlur, setReduceBlur,
-      reduceAnimations, setReduceAnimations,
-      headerLayout, setHeaderLayout
+      reduceAnimations, setReduceAnimations
     }}>
       {children}
     </ThemeContext.Provider>

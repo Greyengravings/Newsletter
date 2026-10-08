@@ -1,57 +1,36 @@
-// src/components/Header.jsx
-import React, { useState, useContext, useEffect, useRef } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React,{useState,useContext,useEffect,useRef} from 'react';
+import {NavLink,useLocation} from 'react-router-dom';
+import {useSelector} from 'react-redux';
+import HomeSidePanel from './HomeSidePanel';
 import AnimatedTitle from './AnimatedTitle';
-import { ThemeContext } from '../context/ThemeContext';
+import {ThemeContext} from '../context/ThemeContext';
 import axios from 'axios';
-import { API_BASE_URL } from '../config/api';
+import {API_BASE_URL} from '../config/api';
 import DefaultProfileImg from '/DefaultProfileImg.jpeg';
-import { Switch } from "@heroui/react";
 
-// Helper to style NavLinks with theme-aware colors
-const NavItem = ({ to, children, onClick, theme }) => {
-  const location = useLocation();
-  const isOnLoginPage = location.pathname === '/login';
+const NavItem=({to,children,onClick,theme})=>{
+  const location=useLocation();
+  const isOnLoginPage=location.pathname==='/login';
+  const baseClasses=`relative group transition-colors duration-300 ${theme==='dark'?'text-white':'text-gray-900'}`;
+  const activeClasses=theme==='dark'?'text-blue-400 font-semibold':'text-blue-600 font-semibold';
+  const loginClasses=`border-2 ${theme==='dark'?'border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-gray-900':'border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'} px-4 py-1 rounded-full transition-all duration-300`;
+  const loginActiveClasses=`border-2 ${theme==='dark'?'border-blue-400 bg-blue-400 text-gray-900':'border-blue-600 bg-blue-600 text-white'} px-4 py-1 rounded-full transition-all duration-300`;
+  const isLoginLink=to==='/login';
 
-  const baseClasses = `relative group transition-colors duration-300 ${
-    theme === 'dark' ? 'text-white' : 'text-gray-900'
-  }`;
-  const activeClasses = theme === 'dark' ? 'text-blue-400 font-semibold' : 'text-blue-600 font-semibold';
-  const loginClasses = `border-2 ${
-    theme === 'dark'
-      ? 'border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-gray-900'
-      : 'border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'
-  } px-4 py-1 rounded-full transition-all duration-300`;
-
-  const loginActiveClasses = `border-2 ${
-    theme === 'dark'
-      ? 'border-blue-400 bg-blue-400 text-gray-900'
-      : 'border-blue-600 bg-blue-600 text-white'
-  } px-4 py-1 rounded-full transition-all duration-300`;
-
-  const isLoginLink = to === '/login';
-
-  return (
+  return(
     <NavLink
       to={to}
-      className={({ isActive }) => {
-        if (isLoginLink) {
-          return isOnLoginPage ? loginActiveClasses : loginClasses;
-        }
-        return `${baseClasses} ${isActive ? activeClasses : theme === 'dark' ? 'hover:text-blue-400' : 'hover:text-blue-600'} flex items-center h-full`;
-      }}
       onClick={onClick}
+      className={({isActive})=>{
+        if(isLoginLink)return isOnLoginPage?loginActiveClasses:loginClasses;
+        return `${baseClasses} ${isActive?activeClasses:theme==='dark'?'hover:text-blue-400':'hover:text-blue-600'} flex items-center h-full`;
+      }}
     >
-      {({ isActive }) => (
+      {({isActive})=>(
         <>
           <span>{children}</span>
-          {!isLoginLink && (
-            <span
-              className={`absolute -bottom-0.5 left-0 h-0.5 bg-blue-600 transition-all duration-300 ${
-                isActive ? 'w-full' : 'w-0 group-hover:w-full'
-              }`}
-            />
+          {!isLoginLink&&(
+            <span className={`absolute -bottom-0.5 left-0 h-0.5 bg-blue-600 transition-all duration-300 ${isActive?'w-full':'w-0 group-hover:w-full'}`}/>
           )}
         </>
       )}
@@ -59,158 +38,237 @@ const NavItem = ({ to, children, onClick, theme }) => {
   );
 };
 
-function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showThemeToggle, setShowThemeToggle] = useState(false);
-  const [showMoreMenu, setShowMoreMenu] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [profile, setProfile] = useState({ displayName: '', profilePicture: '' });
-  const headerRef = useRef(null);
-  const {
-    theme, setTheme,
-    reduceBlur, setReduceBlur,
-    reduceAnimations, setReduceAnimations,
-    headerLayout, setHeaderLayout
-  } = useContext(ThemeContext);
-  const isLoggedIn = useSelector((state) => state.auth?.isLoggedIn);
-  const username = useSelector((state) => state.auth?.username);
-  const role = useSelector((state) => state.auth?.role);
+function Header(){
+  const [isSidePanelOpen,setIsSidePanelOpen]=useState(false);
+  const [windowWidth,setWindowWidth]=useState(window.innerWidth);
+  const [profile,setProfile]=useState({displayName:'',profilePicture:''});
+  const headerRef=useRef(null);
 
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-    setShowMoreMenu(false);
-    setShowThemeToggle(false);
+  const {
+    theme
+  }=useContext(ThemeContext);
+
+  const isLoggedIn=useSelector((state)=>state.auth?.isLoggedIn);
+  const username=useSelector((state)=>state.auth?.username);
+  const role=useSelector((state)=>state.auth?.role);
+
+  const closeMenu=()=>{
+    setIsSidePanelOpen(false);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (headerRef.current && !headerRef.current.contains(event.target)) {
-        setIsMenuOpen(false);
-        setShowMoreMenu(false);
-        setShowThemeToggle(false);
+  useEffect(()=>{
+    const handleResize=()=>{
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize',handleResize);
+
+    return()=>{
+      window.removeEventListener('resize',handleResize);
+    };
+  },[]);
+
+  useEffect(()=>{
+    if(!isLoggedIn||!username){
+      setProfile({
+        displayName:'',
+        profilePicture:''
+      });
+      return;
+    }
+
+    const fetchProfile=async()=>{
+      try{
+        if(role==='admin'){
+          const response=await axios.get(
+            `${API_BASE_URL}/admin/profile/${encodeURIComponent(username)}`
+          );
+
+          if(response.data&&response.data.profile){
+            setProfile({
+              displayName:response.data.profile.displayName||username,
+              profilePicture:response.data.profile.profilePicture||DefaultProfileImg
+            });
+          }
+        }else{
+          const token=localStorage.getItem('token');
+
+          const response=await axios.get(
+            `${API_BASE_URL}/user/profile`,
+            {
+              headers:{
+                Authorization:`Bearer ${token}`
+              }
+            }
+          );
+
+          setProfile({
+            displayName:response.data.user.displayName||username,
+            profilePicture:response.data.user.profilePicture||DefaultProfileImg
+          });
+        }
+      }catch(error){
+        console.error(
+          'Failed to fetch profile for header:',
+          error
+        );
+
+        setProfile({
+          displayName:username,
+          profilePicture:DefaultProfileImg
+        });
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    fetchProfile();
+  },[isLoggedIn,username,role]);
 
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (isLoggedIn && username) {
-      const fetchProfile = async () => {
-        try {
-          if (role === 'admin') {
-            const response = await axios.get(`${API_BASE_URL}/admin/profile/${encodeURIComponent(username)}`);
-            if (response.data && response.data.profile) {
-              setProfile({
-                displayName: response.data.profile.displayName || username,
-                profilePicture: response.data.profile.profilePicture || DefaultProfileImg,
-              });
-            }
-          } else {
-            const token = localStorage.getItem('token');
-            const response = await axios.get(`${API_BASE_URL}/user/profile`, {
-              headers: { Authorization: `Bearer ${token}` },
-            });
-            setProfile({
-              displayName: response.data.user.displayName || username,
-              profilePicture: response.data.user.profilePicture || DefaultProfileImg,
-            });
-          }
-        } catch (error) {
-          console.error('Failed to fetch profile for header:', error);
-          setProfile({
-            displayName: username,
-            profilePicture: DefaultProfileImg,
-          });
-        }
-      };
-      fetchProfile();
-    }
-  }, [isLoggedIn, username, role]);
-
-  const pillBgClass = theme === 'dark'
-    ? 'bg-slate-900/70 border-white/10 text-white'
-    : 'bg-blue-50/70 border-blue-200/50 text-gray-900';
-
-  return (
-    <header ref={headerRef} className="fixed top-4 z-50 w-full left-0 right-0">
+  return(
+    <header
+      ref={headerRef}
+      className="fixed top-4 z-50 w-full left-0 right-0"
+    >
       <div className="w-[95%] md:max-w-[90%] mx-auto relative">
-        {headerLayout === 'detached' ? (
-          /* DETACHED HEADER LAYOUT */
-          <div className="flex justify-between items-center w-full gap-3 md:gap-4">
-            {/* Left Pill - PC, Tablet, Phone (Animated Title) */}
-            <div className={`transition-all duration-500 overflow-hidden shadow-lg backdrop-blur-md border rounded-full px-4 py-2 md:px-5 shrink-0 ${pillBgClass}`}>
-              <NavLink to="/" onClick={closeMenu}>
-                <AnimatedTitle isDark={theme === 'dark'} />
+        <div
+          className={`transition-all duration-500 overflow-hidden shadow-lg backdrop-blur-md border rounded-full ${
+            theme==='dark'
+              ? 'bg-slate-900/70 border-white/10 text-white'
+              : 'bg-blue-50/70 border-blue-200/50 text-gray-900'
+          }`}
+        >
+          <div className="flex justify-between items-center py-2 pl-3 pr-1 sm:pl-4 relative">
+            {/* LOGO */}
+            <div className="flex-shrink-0 z-10">
+              <NavLink
+                to="/"
+                onClick={closeMenu}
+              >
+                <AnimatedTitle
+                  isDark={theme==='dark'}
+                />
               </NavLink>
             </div>
 
-            {/* PC Layout: Center Pill + Right Pill (visible lg: and above) */}
-            <div className="hidden lg:flex items-center justify-between flex-1 gap-3 md:gap-4">
-              {/* Center Pill: 3 Navs */}
-              <div className={`mx-auto transition-all duration-500 overflow-hidden shadow-lg backdrop-blur-md border rounded-full px-8 py-2 flex items-center space-x-8 ${pillBgClass}`}>
-                <NavItem to="/" theme={theme}>Home</NavItem>
-                <NavItem to="/categories" theme={theme}>Categories</NavItem>
-                <NavItem to="/contact" theme={theme}>Contact</NavItem>
-              </div>
+            {/* DESKTOP NAVIGATION */}
+            <nav
+              className={`hidden md:flex items-center ${
+                windowWidth<=1200
+                  ? 'ml-auto mr-4 space-x-6'
+                  : 'absolute left-1/2 -translate-x-1/2 space-x-10'
+              }`}
+            >
+              <NavItem
+                to="/"
+                theme={theme}
+              >
+                Home
+              </NavItem>
 
-              {/* Right Pill: Login, Subscribe, Settings */}
-              <div className={`transition-all duration-500 overflow-hidden shadow-lg backdrop-blur-md border rounded-full px-5 py-2 flex items-center space-x-4 shrink-0 ${pillBgClass}`}>
-                {isLoggedIn ? (
-                  <NavLink to={role === 'admin' ? '/admin-dashboard' : '/user-profile'} onClick={closeMenu} className="flex items-center space-x-2">
+              <NavItem
+                to="/categories"
+                theme={theme}
+              >
+                Categories
+              </NavItem>
+
+              {windowWidth>1200&&(
+                <NavItem
+                  to="/contact"
+                  theme={theme}
+                >
+                  Contact
+                </NavItem>
+              )}
+            </nav>
+
+            {/* DESKTOP / TABLET ACTIONS */}
+            <div className="hidden md:flex items-center space-x-4 z-10">
+              <div className="flex items-center space-x-3">
+                {/* PROFILE / LOGIN */}
+                {isLoggedIn?(
+                  <NavLink
+                    to={
+                      role==='admin'
+                        ? '/admin-dashboard'
+                        : '/user-profile'
+                    }
+                    onClick={closeMenu}
+                    className="flex items-center space-x-2"
+                  >
                     <img
-                      src={profile.profilePicture || DefaultProfileImg}
+                      src={
+                        profile.profilePicture||
+                        DefaultProfileImg
+                      }
                       alt="Profile"
                       className="w-8 h-8 rounded-full object-cover border-2 border-blue-400"
                     />
-                    <span className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'} font-semibold`}>
-                      {profile.displayName || username || 'Profile'}
+
+                    <span
+                      className={`${
+                        theme==='dark'
+                          ? 'text-white'
+                          : 'text-gray-900'
+                      } font-semibold`}
+                    >
+                      {profile.displayName||
+                        username||
+                        'Profile'}
                     </span>
                   </NavLink>
-                ) : (
-                  <NavItem to="/login" theme={theme}>Login</NavItem>
+                ):(
+                  <NavItem
+                    to="/login"
+                    theme={theme}
+                  >
+                    Login
+                  </NavItem>
                 )}
 
-                <NavLink
-                  to="/subscribe"
-                  className={({ isActive }) => {
-                    const baseClasses = `px-4 py-1 rounded-full border-2 transition-all duration-300 font-medium whitespace-nowrap`;
-                    const filledClasses = theme === 'dark'
-                      ? 'bg-blue-400 border-blue-400 text-gray-900 hover:bg-transparent hover:text-blue-400'
-                      : 'bg-blue-600 border-blue-600 text-white hover:bg-transparent hover:text-blue-600';
+                {/* DESKTOP SUBSCRIBE */}
+                {windowWidth>1200&&(
+                  <NavLink
+                    to="/subscribe"
+                    className={({isActive})=>{
+                      const baseClasses=
+                        'px-4 py-1 rounded-full border-2 transition-all duration-300 font-medium whitespace-nowrap';
 
-                    const activeShadow = isActive
-                      ? (theme === 'dark' ? 'shadow-lg shadow-blue-400/20' : 'shadow-lg shadow-blue-600/20')
-                      : '';
+                      const filledClasses=
+                        theme==='dark'
+                          ? 'bg-blue-400 border-blue-400 text-gray-900 hover:bg-transparent hover:text-blue-400'
+                          : 'bg-blue-600 border-blue-600 text-white hover:bg-transparent hover:text-blue-600';
 
-                    return `${baseClasses} ${filledClasses} ${activeShadow}`;
-                  }}
-                  onClick={closeMenu}
-                >
-                  Subscribe
-                </NavLink>
+                      const activeShadow=
+                        isActive
+                          ? theme==='dark'
+                            ? 'shadow-lg shadow-blue-400/20'
+                            : 'shadow-lg shadow-blue-600/20'
+                          : '';
 
+                      return `${baseClasses} ${filledClasses} ${activeShadow}`;
+                    }}
+                    onClick={closeMenu}
+                  >
+                    Subscribe
+                  </NavLink>
+                )}
+
+                {/* DESKTOP / TABLET HAMBURGER */}
                 <button
-                  onClick={() => {
-                    setShowThemeToggle(!showThemeToggle);
-                    setShowMoreMenu(false);
-                  }}
-                  className={`p-0.1 focus:outline-none transition-all duration-300 rounded-full hover:bg-black/5 dark:hover:bg-white/10 ${
-                    theme === 'dark' ? 'text-white hover:text-blue-400' : 'text-gray-900 hover:text-blue-600'
+                  type="button"
+                  onClick={()=>setIsSidePanelOpen(true)}
+                  aria-label="Open side panel"
+                  aria-expanded={isSidePanelOpen}
+                  aria-controls="home-account-panel"
+                  title="Open side panel"
+                  className={`w-10 h-10 flex items-center justify-center rounded-full mr-2 transition-all duration-300 ${
+                    theme==='dark'
+                      ? 'text-white hover:bg-white/10 hover:text-blue-400'
+                      : 'text-gray-900 hover:bg-black/5 hover:text-blue-600'
                   }`}
-                  title="Settings"
                 >
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
+                    className="w-6 h-6"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -218,58 +276,31 @@ function Header() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
-                    <circle cx="12" cy="12" r="3" />
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                    <path d="M4 6h16"/>
+                    <path d="M4 12h16"/>
+                    <path d="M4 18h16"/>
                   </svg>
                 </button>
               </div>
             </div>
 
-            {/* Tablet Layout: Right Pill with Navs (visible md: to lg:) */}
-            <div className={`hidden md:flex lg:hidden items-center space-x-5 px-5 py-2 transition-all duration-500 overflow-hidden shadow-lg backdrop-blur-md border rounded-full ${pillBgClass}`}>
-              <NavItem to="/" theme={theme}>Home</NavItem>
-              <NavItem to="/categories" theme={theme}>Categories</NavItem>
-              <NavItem to="/contact" theme={theme}>Contact</NavItem>
-
-              {isLoggedIn ? (
-                <NavLink to={role === 'admin' ? '/admin-dashboard' : '/user-profile'} onClick={closeMenu} className="flex items-center space-x-2">
-                  <img
-                    src={profile.profilePicture || DefaultProfileImg}
-                    alt="Profile"
-                    className="w-7 h-7 rounded-full object-cover border-2 border-blue-400"
-                  />
-                </NavLink>
-              ) : (
-                <NavItem to="/login" theme={theme}>Login</NavItem>
-              )}
-
-              <NavLink
-                to="/subscribe"
-                className={({ isActive }) => {
-                  const baseClasses = `px-3 py-1 rounded-full border-2 transition-all duration-300 font-medium text-xs whitespace-nowrap`;
-                  return theme === 'dark'
-                    ? 'bg-blue-400 border-blue-400 text-gray-900'
-                    : 'bg-blue-600 border-blue-600 text-white';
-                }}
-                onClick={closeMenu}
-              >
-                Subscribe
-              </NavLink>
-
+            {/* MOBILE HAMBURGER */}
+            <div className="md:hidden flex items-center">
               <button
-                onClick={() => {
-                  setShowThemeToggle(!showThemeToggle);
-                  setShowMoreMenu(false);
-                }}
-                className={`p-0.1 focus:outline-none transition-all duration-300 rounded-full hover:bg-black/5 dark:hover:bg-white/10 ${
-                  theme === 'dark' ? 'text-white hover:text-blue-400' : 'text-gray-900 hover:text-blue-600'
+                type="button"
+                onClick={()=>setIsSidePanelOpen(true)}
+                aria-label="Open navigation"
+                aria-expanded={isSidePanelOpen}
+                aria-controls="home-account-panel"
+                title="Open navigation"
+                className={`w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 ${
+                  theme==='dark'
+                    ? 'text-white hover:bg-white/10 hover:text-blue-400'
+                    : 'text-gray-900 hover:bg-black/5 hover:text-blue-600'
                 }`}
-                title="Settings"
               >
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
+                  className="w-6 h-6"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -277,463 +308,22 @@ function Header() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <circle cx="12" cy="12" r="3" />
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                  <path d="M4 6h16"/>
+                  <path d="M4 12h16"/>
+                  <path d="M4 18h16"/>
                 </svg>
               </button>
             </div>
-
-            {/* Phone Layout: Right Pill with Hamburger Button (< md:) */}
-            <div className={`md:hidden flex items-center px-4 py-2 transition-all duration-500 overflow-hidden shadow-lg backdrop-blur-md border rounded-full ${pillBgClass}`}>
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className={`focus:outline-none transition-colors ${
-                  theme === 'dark' ? 'text-white' : 'text-gray-900'
-                } hover:text-blue-600`}
-              >
-                {isMenuOpen ? (
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                ) : (
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                )}
-              </button>
-            </div>
           </div>
-        ) : (
-          /* SINGLE HEADER LAYOUT (Original Pill) */
-          <div className={`transition-all duration-500 overflow-hidden shadow-lg backdrop-blur-md border rounded-full ${pillBgClass}`}>
-            <div className="flex justify-between items-center py-2 pl-4 pr-5 relative">
-              {/* Logo Section */}
-              <div className="flex-shrink-0 z-10">
-                <NavLink to="/" onClick={closeMenu}>
-                  <AnimatedTitle isDark={theme === 'dark'} />
-                </NavLink>
-              </div>
-
-              {/* Middle Navigation - Desktop */}
-              <nav
-                className={`hidden md:flex items-center ${
-                  windowWidth <= 1200 ? 'ml-auto mr-4 space-x-6' : 'absolute left-1/2 -translate-x-1/2 space-x-10'
-                }`}
-              >
-                <NavItem to="/" theme={theme}>Home</NavItem>
-                <NavItem to="/categories" theme={theme}>Categories</NavItem>
-                {windowWidth > 1200 && (
-                  <NavItem to="/contact" theme={theme}>Contact</NavItem>
-                )}
-              </nav>
-
-              {/* Right Actions - Desktop */}
-              <div className="hidden md:flex items-center space-x-4 z-10">
-                <div className="flex items-center space-x-3">
-                  {isLoggedIn ? (
-                    <NavLink to={role === 'admin' ? '/admin-dashboard' : '/user-profile'} onClick={closeMenu} className="flex items-center space-x-2">
-                      <img
-                        src={profile.profilePicture || DefaultProfileImg}
-                        alt="Profile"
-                        className="w-8 h-8 rounded-full object-cover border-2 border-blue-400"
-                      />
-                      <span className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'} font-semibold`}>
-                        {profile.displayName || username || 'Profile'}
-                      </span>
-                    </NavLink>
-                  ) : (
-                    <NavItem to="/login" theme={theme}>Login</NavItem>
-                  )}
-
-                  {windowWidth <= 1200 && (
-                    <button
-                      onClick={() => {
-                        setShowMoreMenu(!showMoreMenu);
-                        setShowThemeToggle(false);
-                      }}
-                      className={`px-4 py-1 rounded-full border-2 font-medium transition-all duration-300 ${
-                        theme === 'dark'
-                          ? 'border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-gray-900'
-                          : 'border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'
-                      }`}
-                    >
-                      More
-                    </button>
-                  )}
-
-                  {windowWidth > 1200 && (
-                    <NavLink
-                      to="/subscribe"
-                      className={({ isActive }) => {
-                        const baseClasses = `px-4 py-1 rounded-full border-2 transition-all duration-300 font-medium whitespace-nowrap`;
-                        const filledClasses = theme === 'dark'
-                          ? 'bg-blue-400 border-blue-400 text-gray-900 hover:bg-transparent hover:text-blue-400'
-                          : 'bg-blue-600 border-blue-600 text-white hover:bg-transparent hover:text-blue-600';
-
-                        const activeShadow = isActive
-                          ? (theme === 'dark' ? 'shadow-lg shadow-blue-400/20' : 'shadow-lg shadow-blue-600/20')
-                          : '';
-
-                        return `${baseClasses} ${filledClasses} ${activeShadow}`;
-                      }}
-                      onClick={closeMenu}
-                    >
-                      Subscribe
-                    </NavLink>
-                  )}
-                </div>
-
-                {windowWidth > 1200 && (
-                  <button
-                    onClick={() => {
-                      setShowThemeToggle(!showThemeToggle);
-                      setShowMoreMenu(false);
-                    }}
-                    className={`p-0.1 focus:outline-none transition-all duration-300 rounded-full hover:bg-black/5 dark:hover:bg-white/10 ${
-                      theme === 'dark' ? 'text-white hover:text-blue-400' : 'text-gray-900 hover:text-blue-600'
-                    }`}
-                    title="Toggle Settings"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <circle cx="12" cy="12" r="3" />
-                      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-                    </svg>
-                  </button>
-                )}
-              </div>
-
-              {/* Hamburger Menu - Mobile */}
-              <div className="md:hidden flex items-center space-x-3">
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className={`focus:outline-none transition-colors ${
-                    theme === 'dark' ? 'text-white' : 'text-gray-900'
-                  } hover:text-blue-600`}
-                >
-                  {isMenuOpen ? (
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  ) : (
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Settings Pop-up Card */}
-        {showThemeToggle && (
-          <div className={`absolute top-full right-6 mt-2 p-6 shadow-2xl backdrop-blur-md border rounded-3xl transition-all duration-300 z-50 min-w-[280px] ${
-            theme === 'dark'
-              ? 'bg-slate-900/90 border-white/10 text-white'
-              : 'bg-blue-50/90 border-blue-200/50 text-gray-900'
-          }`}>
-            <h3 className="text-lg font-bold mb-4 px-1">Settings</h3>
-
-            <div className="space-y-4">
-              {/* Header Style Segmented Control */}
-              <div className="space-y-1.5">
-                <span className="text-sm font-medium opacity-80 block">Header Layout</span>
-                <div className={`grid grid-cols-2 p-1 rounded-xl border ${
-                  theme === 'dark' ? 'bg-slate-800/80 border-white/10' : 'bg-blue-100/50 border-blue-200/60'
-                }`}>
-                  <button
-                    type="button"
-                    onClick={() => setHeaderLayout('single')}
-                    className={`py-1.5 px-3 text-xs font-bold rounded-lg transition-all ${
-                      headerLayout === 'single'
-                        ? 'bg-blue-600 text-white shadow-sm'
-                        : (theme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-blue-900')
-                    }`}
-                  >
-                    Single
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setHeaderLayout('detached')}
-                    className={`py-1.5 px-3 text-xs font-bold rounded-lg transition-all ${
-                      headerLayout === 'detached'
-                        ? 'bg-blue-600 text-white shadow-sm'
-                        : (theme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-blue-900')
-                    }`}
-                  >
-                    Detached
-                  </button>
-                </div>
-              </div>
-
-              {/* Theme Toggle */}
-              <Switch
-                isSelected={theme === 'dark'}
-                onChange={(isSelected) => setTheme(isSelected ? 'dark' : 'light')}
-                className="w-full"
-              >
-                <Switch.Content className="flex items-center justify-between w-full min-w-[240px] cursor-pointer outline-none">
-                  <span className="text-sm font-medium opacity-80">Dark Mode</span>
-                  <Switch.Control>
-                    <Switch.Thumb />
-                  </Switch.Control>
-                </Switch.Content>
-              </Switch>
-
-              {/* Reduce Blur */}
-              <Switch
-                isSelected={reduceBlur}
-                onChange={setReduceBlur}
-                className="w-full"
-              >
-                <Switch.Content className="flex items-center justify-between w-full min-w-[240px] cursor-pointer outline-none">
-                  <span className="text-sm font-medium opacity-80">Reduce Blur</span>
-                  <Switch.Control>
-                    <Switch.Thumb />
-                  </Switch.Control>
-                </Switch.Content>
-              </Switch>
-
-              {/* Reduce Animations */}
-              <Switch
-                isSelected={reduceAnimations}
-                onChange={setReduceAnimations}
-                className="w-full"
-              >
-                <Switch.Content className="flex items-center justify-between w-full min-w-[240px] cursor-pointer outline-none">
-                  <span className="text-sm font-medium opacity-80">Reduce Animations</span>
-                  <Switch.Control>
-                    <Switch.Thumb />
-                  </Switch.Control>
-                </Switch.Content>
-              </Switch>
-            </div>
-
-            {/* User Settings Link */}
-            <div className="pt-4 mt-2 border-t border-gray-200 dark:border-gray-700">
-              <NavLink
-                to={isLoggedIn ? (role === 'admin' ? '/admin-dashboard' : '/user-profile') : "/login"}
-                onClick={closeMenu}
-                className={`flex items-center justify-between p-2 rounded-xl transition-colors ${
-                  theme === 'dark' ? 'hover:bg-white/5' : 'hover:bg-black/5'
-                }`}
-              >
-                <span className="text-sm font-bold">
-                  {isLoggedIn && role === 'admin' ? 'Admin Dashboard' : 'User Settings'}
-                </span>
-                <svg className="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </NavLink>
-            </div>
-          </div>
-        )}
-
-        {/* "More" Menu Pop-up - Visible between 760px and 1200px */}
-        {showMoreMenu && windowWidth <= 1200 && (
-          <div className={`absolute top-full right-6 mt-2 p-6 shadow-2xl backdrop-blur-md border rounded-3xl transition-all duration-300 z-50 min-w-[200px] ${
-            theme === 'dark'
-              ? 'bg-slate-900/95 border-white/10 text-white'
-              : 'bg-blue-50/95 border-blue-200/50 text-gray-900'
-          }`}>
-            <div className="flex flex-col space-y-5">
-              <NavItem to="/contact" onClick={closeMenu} theme={theme}>Contact</NavItem>
-
-              <NavLink
-                to="/subscribe"
-                className={({ isActive }) => {
-                  const baseClasses = `px-4 py-2 rounded-full border-2 transition-all duration-300 font-bold text-center`;
-                  const filledClasses = theme === 'dark'
-                    ? 'bg-blue-400 border-blue-400 text-gray-900 hover:bg-transparent hover:text-blue-400'
-                    : 'bg-blue-600 border-blue-600 text-white hover:bg-transparent hover:text-blue-600';
-
-                  return `${baseClasses} ${filledClasses}`;
-                }}
-                onClick={closeMenu}
-              >
-                Subscribe
-              </NavLink>
-
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
-                <Switch
-                  isSelected={theme === 'dark'}
-                  onChange={(isSelected) => setTheme(isSelected ? 'dark' : 'light')}
-                  className="w-full"
-                >
-                  <Switch.Content className="flex items-center justify-between w-full min-w-[160px] cursor-pointer outline-none">
-                    <span className="text-sm font-medium">
-                      {theme === 'light' ? 'Light' : 'Dark'}
-                    </span>
-                    <Switch.Control>
-                      <Switch.Thumb />
-                    </Switch.Control>
-                  </Switch.Content>
-                </Switch>
-
-                {/* Reduce Blur */}
-                <Switch
-                  isSelected={reduceBlur}
-                  onChange={setReduceBlur}
-                  className="w-full"
-                >
-                  <Switch.Content className="flex items-center justify-between w-full min-w-[160px] cursor-pointer outline-none">
-                    <span className="text-sm font-medium">Reduce Blur</span>
-                    <Switch.Control>
-                      <Switch.Thumb />
-                    </Switch.Control>
-                  </Switch.Content>
-                </Switch>
-
-                {/* Reduce Animations */}
-                <Switch
-                  isSelected={reduceAnimations}
-                  onChange={setReduceAnimations}
-                  className="w-full"
-                >
-                  <Switch.Content className="flex items-center justify-between w-full min-w-[160px] cursor-pointer outline-none">
-                    <span className="text-sm font-medium">Reduce Animations</span>
-                    <Switch.Control>
-                      <Switch.Thumb />
-                    </Switch.Control>
-                  </Switch.Content>
-                </Switch>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Mobile Navigation Card - separate from pill */}
-        {isMenuOpen && (
-          <nav
-            className={`md:hidden mt-2 p-6 shadow-xl backdrop-blur-md border rounded-[2rem] transition-all duration-300 max-h-[70vh] overflow-y-auto ${
-              theme === 'dark'
-                ? 'bg-slate-900/90 border-white/10 text-white'
-                : 'bg-blue-50/90 border-blue-200/50 text-gray-900'
-            }`}
-          >
-            <div className="flex flex-col items-center space-y-4">
-              <NavItem to="/" onClick={closeMenu} theme={theme}>Home</NavItem>
-              <NavItem to="/categories" onClick={closeMenu} theme={theme}>Categories</NavItem>
-              <NavItem to="/contact" onClick={closeMenu} theme={theme}>Contact</NavItem>
-              {isLoggedIn ? (
-                <NavLink to={role === 'admin' ? '/admin-dashboard' : '/user-profile'} onClick={closeMenu} className="flex items-center space-x-2">
-                  <img
-                    src={profile.profilePicture || DefaultProfileImg}
-                    alt="Profile"
-                    className="w-8 h-8 rounded-full object-cover border-2 border-blue-400"
-                  />
-                  <span className="font-semibold">
-                    {profile.displayName || username || 'Profile'}
-                  </span>
-                </NavLink>
-              ) : (
-                <NavItem to="/login" onClick={closeMenu} theme={theme}>Login</NavItem>
-              )}
-
-              <NavLink
-                to="/subscribe"
-                className={({ isActive }) => {
-                  const baseClasses = `px-6 py-2 rounded-full border-2 font-bold transition-all duration-300 w-full text-center`;
-                  const filledClasses = theme === 'dark'
-                    ? 'bg-blue-400 border-blue-400 text-gray-900 hover:bg-transparent hover:text-blue-400'
-                    : 'bg-blue-600 border-blue-600 text-white hover:bg-transparent hover:text-blue-600';
-
-                  return `${baseClasses} ${filledClasses} ${isActive ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`;
-                }}
-                onClick={closeMenu}
-              >
-                Subscribe
-              </NavLink>
-
-              {/* Theme & Accessibility Toggles in Mobile Menu */}
-              <div className="w-full pt-4 border-t border-blue-200/30 dark:border-white/10 space-y-4">
-                {/* Header Layout Segmented Control in Mobile Menu */}
-                <div className="space-y-1.5 px-2">
-                  <span className="text-sm font-medium opacity-80 block">Header Layout</span>
-                  <div className={`grid grid-cols-2 p-1 rounded-xl border ${
-                    theme === 'dark' ? 'bg-slate-800/80 border-white/10' : 'bg-blue-100/50 border-blue-200/60'
-                  }`}>
-                    <button
-                      type="button"
-                      onClick={() => setHeaderLayout('single')}
-                      className={`py-1.5 px-3 text-xs font-bold rounded-lg transition-all ${
-                        headerLayout === 'single'
-                          ? 'bg-blue-600 text-white shadow-sm'
-                          : (theme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-blue-900')
-                      }`}
-                    >
-                      Single
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setHeaderLayout('detached')}
-                      className={`py-1.5 px-3 text-xs font-bold rounded-lg transition-all ${
-                        headerLayout === 'detached'
-                          ? 'bg-blue-600 text-white shadow-sm'
-                          : (theme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-blue-900')
-                      }`}
-                    >
-                      Detached
-                    </button>
-                  </div>
-                </div>
-
-                {/* Dark Mode */}
-                <Switch
-                  isSelected={theme === 'dark'}
-                  onChange={(isSelected) => setTheme(isSelected ? 'dark' : 'light')}
-                  className="w-full"
-                >
-                  <Switch.Content className="flex items-center justify-between w-full px-2 cursor-pointer outline-none">
-                    <span className="text-sm font-medium">Dark Mode</span>
-                    <Switch.Control>
-                      <Switch.Thumb />
-                    </Switch.Control>
-                  </Switch.Content>
-                </Switch>
-
-                {/* Reduce Blur */}
-                <Switch
-                  isSelected={reduceBlur}
-                  onChange={setReduceBlur}
-                  className="w-full"
-                >
-                  <Switch.Content className="flex items-center justify-between w-full px-2 cursor-pointer outline-none">
-                    <span className="text-sm font-medium">Reduce Blur</span>
-                    <Switch.Control>
-                      <Switch.Thumb />
-                    </Switch.Control>
-                  </Switch.Content>
-                </Switch>
-
-                {/* Reduce Animations */}
-                <Switch
-                  isSelected={reduceAnimations}
-                  onChange={setReduceAnimations}
-                  className="w-full"
-                >
-                  <Switch.Content className="flex items-center justify-between w-full px-2 cursor-pointer outline-none">
-                    <span className="text-sm font-medium">Reduce Animations</span>
-                    <Switch.Control>
-                      <Switch.Thumb />
-                    </Switch.Control>
-                  </Switch.Content>
-                </Switch>
-              </div>
-            </div>
-          </nav>
-        )}
+        </div>
       </div>
+
+      {/* SINGLE NAVIGATION / ACCOUNT PANEL */}
+      <HomeSidePanel
+        isOpen={isSidePanelOpen}
+        setIsOpen={setIsSidePanelOpen}
+        showCompactOptions={windowWidth<=1200}
+      />
     </header>
   );
 }

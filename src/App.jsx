@@ -76,8 +76,8 @@ function AppContent() {
       <HomeSidePanel />
       {!hideHeaderFooter && !hideHeaderOnly && <Header />}
 
-      {/* Main content area - added mt-24 to ensure it starts below the fixed floating header */}
-      <main className={`w-full flex-grow p-0 md:p-6 ${(hideHeaderFooter || hideHeaderOnly) ? 'mt-0' : 'mt-24'}`}>
+      {/* Main content area - adjusted mt-20 to ensure it starts cleanly below the fixed floating header */}
+      <main className={`w-full flex-grow p-0 md:p-6 ${(hideHeaderFooter || hideHeaderOnly) ? 'mt-0' : 'mt-20'}`}>
         {/* Inner constrained content area - matching header width */}
         <div className="w-[95%] md:w-full md:max-w-[90%] mx-auto">
           <Routes>

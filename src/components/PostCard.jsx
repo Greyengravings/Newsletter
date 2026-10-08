@@ -63,19 +63,19 @@ function PostCard({ post }) {
     return num;
   };
 
-  return (
-    <div className="block">
-      <div className={`rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 ease-in-out group border ${
-        theme === 'dark'
-          ? 'bg-slate-900/60 border-white/10' // Semi-transparent dark
-          : 'bg-white/60 border-gray-200/50' // Semi-transparent light
-      } backdrop-blur-sm`}>
+    return (
+      <div className="block h-full">
+        <div className={`h-full flex flex-col rounded-xl hover:shadow-lg overflow-hidden transition-all duration-300 ease-in-out group border ${
+          theme === 'dark'
+            ? 'bg-slate-900/60 border-white/0'
+            : 'bg-white/60 border-gray-200/10'
+        } backdrop-blur-sm`}>
         {/* Blog Post Image */}
         <div className="relative">
           <img
             src={post.imageUrl}
             alt={post.title}
-            className="w-full aspect-[4/3] object-cover"
+            className="w-full aspect-video object-cover"
           />
           {/* Category Tag */}
           <span className="absolute top-4 left-4 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
@@ -111,7 +111,7 @@ function PostCard({ post }) {
           )}
         </div>
 
-        <div className="p-6">
+        <div className="p-6 flex flex-col flex-1">
           <h2 className={`text-2xl font-bold mb-2 transition-colors duration-300 group-hover:text-blue-600 ${
             theme === 'dark'
               ? 'text-white' // Light text for dark mode
@@ -135,7 +135,7 @@ function PostCard({ post }) {
                 : 'text-gray-700' // Dark text for light mode
             }`}>{post.excerpt}</p>
           )}
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center mt-auto">
             <div className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-semibold transition-colors duration-300 cursor-pointer" onClick={handleReadMore}>
               Read More &rarr;
             </div>

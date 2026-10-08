@@ -98,20 +98,20 @@ function HomePage() {
   }
 
   return (
-    <div className="space-y-6 min-h-screen transition-all duration-500">
-      <div className={`space-y-6 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-        <p className="text-center text-sm opacity-70">Window width: {windowWidth}pixels</p>
+    <div className="space-y-1 min-h-screen transition-all duration-500">
+      <div className={`space-y-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+        <p className="text-center text-xs opacity-60">Window width: {windowWidth}pixels</p>
 
         <RollingHeadings/>
         <HeroSection posts={posts} />
 
         <div id="latest-posts" className="text-center">
-          <h2 className={`text-3xl font-bold mb-8 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+          <h2 className={`text-3xl font-bold mb-3 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             Latest Posts
           </h2>
 
           {/* Search and Filter Bar */}
-          <div className="mb-8 max-w-4xl mx-auto flex gap-2">
+          <div className="mb-5 max-w-4xl mx-auto flex gap-2">
             <div className="flex-1 relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg
@@ -341,24 +341,21 @@ function HomePage() {
           }
 
           return (
-            <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
+            <div className="grid gap-8 grid-cols-1 md:grid-cols-3 items-stretch">
               {filteredPosts.length === 0 ? (
                 <div className="w-full col-span-2">
                   <EmptySearchResults theme={theme} />
                 </div>
               ) : (
                 filteredPosts.slice(0, visiblePosts).map((post) => (
-                  <div key={post._id || post.id}>
-                    <PostCard post={post} />
-                    <button onClick={toggleDetails} className="mt-2 text-blue-600 underline text-sm">
-                      {showDetails ? 'Hide Details' : 'Show Details'}
-                    </button>
-                    {showDetails && (
-                      <div className="text-gray-600 dark:text-gray-300 text-sm mt-1">
-                        <strong>Author:</strong> {post.author} <br />
-                        <strong>Date:</strong> {post.createdAt}
-                      </div>
-                    )}
+                  <div
+                    key={post._id || post.id}
+                    className="flex flex-col h-full"
+                  >
+                    {/* Card fills available row height */}
+                    <div className="flex-1 min-h-0">
+                      <PostCard post={post} />
+                    </div>
                   </div>
                 ))
               )}
