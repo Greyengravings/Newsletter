@@ -32,7 +32,7 @@ function PanelIcon({ name, className = 'h-5 w-5' }) {
 function HomeSidePanel() {
   const [isOpen, setIsOpen] = useState(false);
   const [profile, setProfile] = useState({ displayName: '', profilePicture: DefaultProfileImg });
-  const { theme, setTheme, reduceBlur, setReduceBlur, reduceAnimations, setReduceAnimations, headerLayout, setHeaderLayout } = useContext(ThemeContext);
+  const { theme, setTheme, reduceBlur, setReduceBlur, reduceAnimations, setReduceAnimations } = useContext(ThemeContext);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth?.isLoggedIn);
   const username = useSelector((state) => state.auth?.username);
@@ -160,8 +160,12 @@ function HomeSidePanel() {
                   </p>
                 </div>
               ) : (
-                <Link to="/login" onClick={closePanel} className="inline-flex items-center gap-2 text-lg font-bold text-[oklch(0.546_0.245_262.881)] hover:underline">
-                  <PanelIcon name="login" className="h-5 w-5" />
+                <Link to="/login" onClick={closePanel} className="inline-flex items-center gap-3 text-lg font-bold text-[oklch(0.546_0.245_262.881)] hover:underline">
+                  <img
+                    src={DefaultProfileImg}
+                    alt="Profile"
+                    className="h-10 w-10 shrink-0 rounded-full border-2 border-blue-400 object-cover"
+                  />
                   <span>Sign in / Log in</span>
                 </Link>
               )}
@@ -201,61 +205,25 @@ function HomeSidePanel() {
               </svg>
               <span>Settings</span>
             </h2>
-            <div className="space-y-4">
-              {/* Header Style Segmented Control */}
-              <div className={`p-3 rounded-xl border ${isDark ? 'bg-blue-500/10 border-white/10' : 'bg-blue-50/50 border-blue-200/50'}`}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium opacity-80 flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                    Header Layout
-                  </span>
-                </div>
-                <div className={`grid grid-cols-2 p-1 rounded-lg border ${isDark ? 'bg-slate-800/80 border-white/10' : 'bg-white border-blue-200'}`}>
-                  <button
-                    type="button"
-                    onClick={() => setHeaderLayout('single')}
-                    className={`py-1.5 px-3 text-xs font-bold rounded-md transition-all ${
-                      headerLayout === 'single'
-                        ? 'bg-blue-600 text-white shadow-sm'
-                        : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-blue-900')
-                    }`}
-                  >
-                    Single
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setHeaderLayout('detached')}
-                    className={`py-1.5 px-3 text-xs font-bold rounded-md transition-all ${
-                      headerLayout === 'detached'
-                        ? 'bg-blue-600 text-white shadow-sm'
-                        : (isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-blue-900')
-                    }`}
-                  >
-                    Detached
-                  </button>
-                </div>
-              </div>
-
+            <div className="space-y-1.5">
               <Switch
                 isSelected={theme === 'dark'}
                 onChange={(isSelected) => setTheme(isSelected ? 'dark' : 'light')}
                 className="w-full"
               >
-                <Switch.Content className={`flex w-full min-w-[240px] cursor-pointer items-center justify-between rounded-xl px-3 py-3 outline-none transition-colors focus-within:ring-2 focus-within:ring-blue-500 ${isDark ? 'bg-blue-500/10 hover:bg-blue-500/20 active:bg-blue-500/35' : 'hover:bg-blue-50 active:bg-blue-100'}`}>
+                <Switch.Content className={`flex w-full min-w-[240px] cursor-pointer items-center justify-between rounded-xl px-3 py-2 outline-none transition-colors focus-within:ring-2 focus-within:ring-blue-500 ${isDark ? 'bg-blue-500/10 hover:bg-blue-500/20 active:bg-blue-500/35' : 'hover:bg-blue-50 active:bg-blue-100'}`}>
                   <span className="flex items-center gap-2 text-sm font-medium opacity-80"><PanelIcon name="dark" />Dark Mode</span>
                   <Switch.Control><Switch.Thumb /></Switch.Control>
                 </Switch.Content>
               </Switch>
               <Switch isSelected={reduceBlur} onChange={setReduceBlur} className="w-full">
-                <Switch.Content className={`flex w-full min-w-[240px] cursor-pointer items-center justify-between rounded-xl px-3 py-3 outline-none transition-colors focus-within:ring-2 focus-within:ring-blue-500 ${isDark ? 'hover:bg-blue-500/20 active:bg-blue-500/35' : 'hover:bg-blue-50 active:bg-blue-100'}`}>
+                <Switch.Content className={`flex w-full min-w-[240px] cursor-pointer items-center justify-between rounded-xl px-3 py-2 outline-none transition-colors focus-within:ring-2 focus-within:ring-blue-500 ${isDark ? 'hover:bg-blue-500/20 active:bg-blue-500/35' : 'hover:bg-blue-50 active:bg-blue-100'}`}>
                   <span className="flex items-center gap-2 text-sm font-medium opacity-80"><PanelIcon name="blur" />Reduce Blur</span>
                   <Switch.Control><Switch.Thumb /></Switch.Control>
                 </Switch.Content>
               </Switch>
               <Switch isSelected={reduceAnimations} onChange={setReduceAnimations} className="w-full">
-                <Switch.Content className={`flex w-full min-w-[240px] cursor-pointer items-center justify-between rounded-xl px-3 py-3 outline-none transition-colors focus-within:ring-2 focus-within:ring-blue-500 ${isDark ? 'hover:bg-blue-500/20 active:bg-blue-500/35' : 'hover:bg-blue-50 active:bg-blue-100'}`}>
+                <Switch.Content className={`flex w-full min-w-[240px] cursor-pointer items-center justify-between rounded-xl px-3 py-2 outline-none transition-colors focus-within:ring-2 focus-within:ring-blue-500 ${isDark ? 'hover:bg-blue-500/20 active:bg-blue-500/35' : 'hover:bg-blue-50 active:bg-blue-100'}`}>
                   <span className="flex items-center gap-2 text-sm font-medium opacity-80"><PanelIcon name="motion" />Reduce Animations</span>
                   <Switch.Control><Switch.Thumb /></Switch.Control>
                 </Switch.Content>
